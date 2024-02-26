@@ -1,0 +1,18 @@
+{
+  "name": "cypressui",
+  "version": "1.0.0",
+  "description": "Cypress Test Automation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sezer Ozkan",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^13.6.5"
+  },
+  "dependencies": {
+    "-": "^0.0.1",
+    "D": "^1.0.0"
+  }
+}

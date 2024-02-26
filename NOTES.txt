@@ -1,0 +1,95 @@
+==> Npm(node package manager)
+==> Kurulum icin ilk olarak "npm init" komutu ile baslayabiliyoruz fakat sart degil.Bu komut ile basladigimizda 
+sonrasidna girdigimiz bilgiler proje icerisine olusturulan package.json dosyasi olarak ekleniyor.Ayrica sonrasinda 
+ekledigimiz framework ler ve plugin ler de yien buraya ekleniyor. 
+==> cypress kurulumu icin "npm install cypress --save-dev " komutunu kullandik.
+==> fixtures; test verilerinin saklandigi klasor
+==> e2e; otomasyon kodlarinin saklandigi klasor
+==> support;reusable kodlar ve methodlari eklemek icin kullanilir
+==> cypress.config.js;Proje ayarlarinin yapilandirildigi dosya.Biraz daha aciklamak gerekirse ornegin
+defaultCommandTimeout: 4000 ayari cypress'in default olarak bekledigi sureyi gosteriyor bunu degistirmek istersem sondaki 
+4000 degerini degistirmem ve degismis halini cypress.config.js dosyasi icerisine eklemem yeterli olacaktir.Bir diger 
+ornek olarak istersek yaptigimiz testlerin videolarini cekebiliyoruz.Bu ozellik default olarak desactive fakat
+"video:false" olarak belirtilen ayari "video: true" olarak degistirip cypress.config.js dosyasina eklersem cypress yaptigi 
+testlerin videosunu cekmeye baslayacaktir.
+==> package.json; Proje bilgilerinin ve dependecy'lerin saklandigi dosya
+==> package - lock.json; Yuklenen modullerin saklandigi dosya
+==> npx cypress run komutu ile tum testlarin headless olarak kosturulmasi saglaniyor.
+==> npx cypress run--spec "dosya ya da klasor yolu" bu durumda elektron browser'inda testler kosulmus 
+oluyor.
+==> npx cypress run--borwser chrome--spec "dosya ya da klasor yolu" Bu ihtimalde testlerimizi chorme browser uzerinde 
+kosmus oluyoruz.
+==>npx cypress run--headed--browser chrome--spec "dosya ya da klasor yolu" seklinde yazdigimizda ise browser acilacak ve 
+testler acilan browser'da kosulacak.
+==> Akilli kod yazma destegi icin cypress klasori icerisinde tsconfig.json isimli bir klasor olusturduk.
+==> Cypress Snippets isimli bir plugin ekledik ve bu plagin sayesinde bir cok kisaltmadan faydalanabiliyoruz.Bazi orneklerini 
+asagiya kopyaladim.
+Snippet	Code
+cyvt	cy.visit('');
+cygt	cy.get('');
+cyfd	cy.get('').find('');
+cyft	cy.get('').first('');
+cyte	cy.get('').type('');
+cycs	cy.contains('');
+cyck	cy.get('').click();
+cywt	cy.wait('');
+cylg	cy.log('');
+cype	cy.pause();
+cydg	cy.debug();
+cyst	cy.screenshot('');
+cyvp	cy.viewport();
+
+Mocha Snippets
+Snippet	Code
+dsb	describe('', () => {
+
+    });
+ctx	context('', () => {
+
+    });
+spy	specify('', () => {
+
+    });
+it	it('', () => {
+
+    });
+bf	before('', () => {
+
+    });
+bfe	beforeEach('', () => {
+
+    });
+af	after('', () => {
+
+    });
+afe	afterEach('', () => {
+
+    });
+==> es6 mocha snippets, add only, hide comments isimli  baska pluginler yukledik. 
+==> describe ve it bloklari mocha framework'ten geliyor. Bunlarla beraber context(), before(), beforeeach(), afterEach(), 
+after(), .only(), .skip() te mocha frame workten geliyor.
+==> Chai framework; assert, should, expect
+==> Cypress'in negatif olabilecek yonleri;
+1) Safari desteklenmiyor
+2) Mobil otomasyon desteklenmez
+3) Tek URl ve tek sekme kullanimi
+4) Iframe ile pek iyi anlasamaz(bir eklenti ekyerek iframe ile kullanabiliyruz)
+==> Versiyon guncelleme icin
+npm install -D cypress@versiyon komutunda versiyon kismina kurulmak istenen versiyon numarasi yazilir.
+==> Locator yontemleri
+- Cypress yalnizca CSS Selektor yontemini desteklenmiyor
+- XPATH kullabilmek icin cypress - xpath eklentisi eklenmelidir.Fakar cypress le calisirken CSS kullanmak
+daha mantikli
+-Selektor playground ile CSS elementlerini kolay bir sekilde alabiliyoruz. 
+==>CSS Selector kullanimi
+tagname                                 -->input
+ID                                      -->#search
+Class name                              -->.search
+Attribute value                         -->[id="search"]
+Class value                             -->[class="search"]
+Tag name and attribute value            -->input[id="search"]
+Tag name and multiple attribute value   -->input[id="search"][name="keyword"]
+==>Saydafa Locator leri ararken inspecter dedikten sonra ctrl+f diyoruz ve acilan kutucukta aramak 
+istedigimiz seyi ariyoruz. Ornegin "a" tagini aradigimizi dusunelim. Acilan kutucukta sayfada bulunan 
+tum a lari aramis oluyoruz. Fakat en basa // koyup a yi aradigimizda sayfada bulunan a taglerini aramis
+oluyoruz.    
