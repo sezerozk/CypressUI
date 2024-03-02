@@ -86,10 +86,69 @@ tagname                                 -->input
 ID                                      -->#search
 Class name                              -->.search
 Attribute value                         -->[id="search"]
-Class value                             -->[class="search"]
-Tag name and attribute value            -->input[id="search"]
+Class value                             -->[class="search"] class value kullanmamizin sebebi bazi durumlarda birden fazla class
+ayni anda kullanilabilmesidir. "." ile calistigimizda sadece bir tane class degeri kullanabilirken class attribute ile 
+calistigimizda istenen sayida class degerini kullanrak kod yazabiliriz.
+Tag name and attribute value            -->input[id="search"] tag name and attribute value nin bir arada kullanilmasini aranan
+degerin cok daha hizli bulunmasini saglamasidir.
 Tag name and multiple attribute value   -->input[id="search"][name="keyword"]
 ==>Saydafa Locator leri ararken inspecter dedikten sonra ctrl+f diyoruz ve acilan kutucukta aramak 
 istedigimiz seyi ariyoruz. Ornegin "a" tagini aradigimizi dusunelim. Acilan kutucukta sayfada bulunan 
 tum a lari aramis oluyoruz. Fakat en basa // koyup a yi aradigimizda sayfada bulunan a taglerini aramis
 oluyoruz.    
+==> cy.url() methodu ile acik olan sayfanin url sini text olarak alabiliyoruz.
+==>cy.title() ile sayfanin basligini alabiliyoruz. 
+==>cy.contains('') sayfada bulunan bir text ile lacate almak icin bu methodu kullaniyoruz
+==>cy.get() ile locate alirken yazilan kodlar sayfada birden fazla elemente karsilik geliyorsa
+bu method tum elementleri liste halinde dondurdugunden o liste uzerinde islem yapmak da mumkundur.
+==>XPATH Kullanimi
+tag name                            -->//input
+Attribute value                     -->//*[@id="search"] Burada tag name belirtilmedigi icin 
+mevcut tum taglerde arama yapabilmek icin "*" kullaniyoruz.
+Tag name and attribute kullanimi    -->//input[@id="search"]
+Full text value                     -->//a[text()="giris yap"] Text ile locate almak icin kullaniyoruz
+Contains text value                 -->//a[.="giris"] Burada nokta contains anlamina geliyor yani bir 
+ustteki yontem yerine bu yontem de kullanilabilir
+Multiple attribute value            -->//[@id="search" and @name="keyword"]
+==>XPATH Eklentisinin Cypress'e eklenmesi:
+- Ilk olarak bilinmesi gereken yuklenen bu paket gelistiricisi tarafindan guncellemesi olmayan bir 
+pakettir. Yuklemek icin terminalde
+"npm install -D xpath_cypress" kodunu yazmak gerek. 
+Paket indikten sonra cypress'e yukledigimiz paketleri e2e.js dosyasi araciligi ile cypress'e
+tanitmamliyiz aksi halde kullanamiyoruz. Bunun icin support klasorunde bulunan e2e.js dosyasina
+"require('xpath_cypress')" kodunu ekliyoruz. Ve testlerimizde cy.xpath() methodu araciligiyla xpath
+kulanabiliyoruz.
+==>Metot zinciri kullanimi:
+-->Bir elementin altindaki elementi bulma 
+cy.get('.mylist').find('li') Burada mylist isimli liste icinde bulunan li tagli elementi buluyoruz.
+cy.get('.sehirler').contains('Adana') Burada yukaridakine benzer bir islemi find ile degil contains ile yapiyoruz.
+-->Bir elementin icindeki elementlerle calismak icin within() methodunu kullaniyoruz. 
+cy.get('.form-container').within(()=>{
+    cy.get('input[name="username"]').type('Sezer');
+    cy.get('input[name="password"]').type('Sezer');
+});
+Bu kullanim daha cok form elemanlari ile calisirken karsilastigimiz bir durum. Avantaji ise burada within() ile bir cerceve olusturup
+onun icerisinde calisiyoruz. Ornegin burada form-container class'inin icindeki elemanlarla calisacagimizi en bastan belirlemis 
+oluyoruz.
+==>EYLEM KOMUTLARI
+    Otomasyon yaparken kullanicinin siteyle etkilesime gecmesini saglayan islemleri(yazi yazmak, tiklamak, sayfayi kaydirmak gibi)
+    yapmamiza olanak saglayan komutlara eylem koutlari diyoruz.
+    .check() -- .clear()  -- .click() -- .dbclick() -- .rightclick() -- .scrollIntoView() -- .scrollTo() -- .select()
+    .selectFile() -- .trigger() -- .type() -- .unCheck()  
+==>Cypress'te yeni sekme ile calisma
+    Cypress iki farkli sekmede ayni anda calisamaz
+    Bu sorunu cozmek icin farkli yontemler kullanilir:
+    1-Sayfanin yeni sekmede acilmasini engellemek
+    cy.get('#link').invoke('removeAttr','target').click()
+    2- Acilmak istenen sayfanin adresini ziyaret etmek NOT: ilk ziyaret edilen sitenin alt alanlari ziyaret edilebilir
+    fakat yeni bir adres ziyaret edilmek istenirse hata alinir.
+==>ALERT:
+    Kullanicidan cevap almak icin kullanilan bir pop-up pencere turudur.
+    Cypress alert mesajlari otomatik olarak handle eder.
+==>Navigasyon Methodlari
+    Borwser da geri, ileri ya da sayfa yenileme gibi islemleri yapmak icin kullnadigimiz methodlardir.
+    go(directions, opttions) 
+    cy.go(back) ya da cy.go(-1)
+    cy.go(forward) ya da cy.go(1)
+    cy.reload()-->sayfayi yeniler
+ 

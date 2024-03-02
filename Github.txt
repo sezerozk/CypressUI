@@ -1,0 +1,127 @@
+GitHub Kullanimi==>
+1- Kisisel Kullanim:
+GitHub, Git adli bir versioyn kontrol sistemini barindiran bulut tabanli bir hizmettir.
+Bilgisayara Git kurulmasi worunlu.
+
+Git: Bireysel kucuk projelerden cok buyuk projelere kadar projeleri hizli ve verimli bir
+sekilde yonetmek icin tasarlanmis ucretsiz, acika kaynakli ve dagitilmis bir surum kontrol sistemidir.
+
+"First developed in 2005"
+"One thing that really sets Git apart is its branching model"
+"Git is a high qualty version control system"
+Git bilgisayardaki klasor yapisi uzerinden calisir.
+Git komutlarini CMD(Command Prompt) ile veya iDE de bulunan terminal yapisi ile kullanilabilir.
+==>BILGISAYARIMIZDAKI BIR DOSYAYI ILK DEFA GIT'E tANITIP? GITHUB'DA OLUSTURACAGIMIZ BIR REPO'YA YUKLEME:
+Kisisel kullanimda yapacagimiz tum islemler kendi bilgisayarimizdaki local repostory ile
+GitHub'daki remote repostory arasindaki senkronizasyondan ibarettir.
+
+- Local'de repo olusturma git init
+-Klasorumuzdeki tum dosyalari local'deki repoya yuklemek icin; git add .
+- Local repoda versiyon olusturma; git commit -m "versiyon ismi"
+-Branch olusturmak icin; git branch -M main
+-git remote add origin "repostory linki"
+-git push
+
+==>Local repo da yaptigimiz degisiklikleri GitHub'daki repo ile senkronizasyon
+
+-Klasorumuzdeki tum dosyalari localdaki repoya yuklemek icin; git add .
+-Local repoda versiyon olusturma; git commit -m "versiyon ismi"
+-Remote repo ile local repo'yu senkronize etme; git push
+
+==>GitHub'da erisim yetkimiz olan bir repo'yu bilgisayara indirme
+-Repoyu indirecegimiz ve seknronize edecegimiz bir klasor olusturma
+-Komut ekrani ile git init komutu sayesinde kalsoru Git'e tanitalim
+-Remote repo'nun linkini kopyalayalim
+-Indrimek icin git pull "remote repo'nun linki"
+**Bir kere senkronizasyon yapildiktan sonra ayni repo'dan yapilacak sonraki indirmelerde sadece
+git pull .. komutunun kullanilmasi yeterli olacaktir.
+
+==>GitHub'dan indirilen dosya uzerinde yapilan degisikliklerin remote repo ile senkronize edilmesi
+-Burada ilk ornekteki islemler yapilmaksizin dogrudan dosyalar indirildigi icin ilk ornekteli
+islemlerin git init komutu haricinde yapilmasi gerekli.
+Bu islemden sonraki senkronizasyonlar icin;
+-git add .
+-git commit -m "versiyon aciklamasi"
+-git push
+komutlari yeterli olacaktir.
+2-Takim Calismasinda GitHub Kullanimi
+Sifirdan baslayalim=> Ilk olarak GitHub da yer alan bir projeyi indirelim
+Bunun IntelliJ deki dogrudan kopyalama ozelligini ya da git sistemini kullanarak yapabiliriz
+(git init
+git pull "remote repo'nun linki")
+Daha sonra artik bilgisayarimizda olan proje ile remote repostory'deki dosyayi ilintilemek icin=>
+Eger IntelliJ ile indirdiyesk git init ile baslamaliyiz fakat daha once git uzerinden indirdiysek
+git init komutunu daha once kullandigimiz icin tekrar etmemize gerek yok.
+Branch olusturmamiz gerek=> git branch -M main
+git remote add origin "remote repo linki"
+git push -u origin main
+Bunlari yaptiktan sonra yereldeki repo ile remote repo ilintilenmis oldu. Simdi grup calismasi
+oldugu icin kendime bir branch olusturmaliyim.
+git branch Sezer(Genelde islemi yapan kisi kendi ismi ile branch olusturuyor)
+Bu islemden sonra git branch komutu ile branch in olusup olusmadigi ya da o sirada hangi branch'te
+calistigimizi kontrol edebiliriz. Yaninda yildiz bulunan branch o sirada islem yaptigimiz branch'i
+gosteriyor.
+(PS C:\Users\33620\IdeaProjects\GitHub> git branch
+   Sezer
+ * main)
+ Main branch'ten Sezer branch'ine gecebilmek icin
+ git checkout Sezer komutunu kullaniyoruz.
+ Bu islemden sonra artik kendi branc'imizde kad yaziyor olacagiz.
+Kodlarimizi yazdiktan sonra yaptigimiz degisiklikleri artik projenin orjinal haline eklemek istedigimiz
+zaman==>
+Yaptigimiz degisiklikleri kaydetmeliyiz ya da GitHub tabiri ile commit etmeliyiz.Bunun icin;
+git add .
+git commit -m "versiyona vermek istedigimiz isim"
+Daha sonra main branch'ine geciyoruz. Gectigimizde kendi branch'imizde yaptigimiz degisikliklerin
+main branch'te olmadigini dosyalari inceledigimizde gorebiliriz.
+Eger kendi branch'imizde yaptigimiz gelistirmeleri main e tasimak istiyorsak;
+main deyken
+-git merge Sezer
+komutunu kullaniyoruz.
+Unutmamak gerekir ki bu yapilan islemleri hala localde yapiyoruz. Henuz cloud da bir islem yapmadik.
+Bu sekilde calistigimizda calisirken kodun orjinal halini saklamis oluyoruz ve bir aksilik olmasi durumunda
+kodun orjinali elimizde olmus oluyor.
+Dikkat edilmesi gereken bir nokta var ki ister main branch te ister Sezer branch'inde olsun yaptigimiz degisikligi
+kaydetmek istiyorsak degisiklikleri eklemeli ve bir commit olusturmak zorundayiz. Yani kendi branchimizde calisirken
+main branch'e gecmeden once asagidaki komutlarla yaptigimiz degisiklikleri kaydetmeliyiz. Aksi halde
+yaptigimiz degisiklikler otomatik olarak main branch'te de gorunuyor. Bunun mantigini ve sebebini anlayamadim.
+
+git add .
+git commit -m "versiyon adi"
+===>***********************Techpro Github Notlari******************************
+git add .==>komutu versiyon olusturmadan once dosyalari staging area ya gonderiyor.
+git commit -m ==>Buradaki -m message in kisaltilmis halidir.
+git log --oneline==>Komutu versiyonlari gormemizi sagliyor. Burada sari renkle gosterilen 7 haneli kisim
+versiyonun kimlik bilgisidir ve o versiyonda yapilan degisiklikleri gormek icin;
+git show 1111111(versiyon kimlik bilgisi-bu kod hash kodu olarak isimlendiriliyor) komutunu giryoruz.
+git log==> KOmutu ile versiyon bilgisinin yani sira versiyonun kim tarafindan ne zaman olusturuldugunu da
+gorebiliyoruz.
+===>git add . komutu ile staging area ya gonderdigimiz kodlari nasil geri alabiliriz?
+    git restore --staged .==>Bu kod ile stage deki tum dosyalari geri al demis oluyoruz. "." kismina dosya ismi
+    yazarak sadece o dosyanin geri alinmasini saglayabiliriz.
+===>Versiyon degistirme=>Son versiyonu silmeden onceki bir versiyonu yeni versiyon olarak yayinlama;
+    git checkout hash_kodu .=>komutunu girdigimiz zaman hash_kodunu girdigimiz versiyona donmus oluyoruz. Bu sekilde
+    versiyonlar arasinda gecis yapabiliriz. Ifade etmejk gerekir ki bu yontemle verileri silmiyoruz. Ornegin 3 versiyonun
+    oldugu bir durumda once 3. versiypndan 2. versyina gecip daha sonrasinda git commit -m "" yoluyla mevcut versiyonu
+    4. versiyon olarak kaydedersek 2. versiyonu 4. versiyon olarak yeniden tanimlamis ve bu arada 3. versiyionu da
+    korumus oluyoruz.
+===>git remote add origin https://github.com/sezerozk/JS.git>bu kodun aciklamasi adresini verdigim repostory i kaynak
+    olarak eklemek istiyorum. Hangi linke bagli oldumuzu gormek icin git remote -v ==> komutunu girmemiz gerek.
+==>Git Configuration:
+    git config --global user.name "Ali Gel"
+    git config --global user.email "ali@gel.com"
+    git config --global color.ui true
+    -System parametresi kullanildiginda tum kullanicilar ve tum repolar uzerinde etkili olur.
+    -Global parametresi gecerli kullanicinin tum repolari uzeinde etkili olur
+    -local parametresi ise sadece gecerli repo uzerinde etkili olur
+    
+
+
+
+
+
+
+
+
+
+

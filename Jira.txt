@@ -1,0 +1,15 @@
+Jira bir proje yonetim aracidir.
+Jira hesabi icin https://www.atlassian.com/fr adresinden hesap actik ve jira'ya ulastik.
+Giris yaparken sectigimiz proje default ayarlarla birlikte jira'ya giris yaptigimizda otomatik 
+geliyor. Kendi istedigimiz ayarlari yapabilmek icin ust kisimdaki projets bolumunden tum projeleri gor deyip acilan
+sayfada mevcut projeyi silip sonrasinda proje olustur butonuna tikliyoruz. Sol tarafta acilan menuden développement logiciel
+secenegine tikliyoruz. Sonrasinda scrum secip devam ediyoruz ve proje tipini secmemizi istiyor. Xray kullanabilmek
+icin burada géré par l'entreprise secenegini seciyoruz. Daha sonra projemize isim veriyoruz ve proje olusturulmus oluyor.
+Yukaridaki équipes bolumunden projeye eklemek istedigimiz kisilere davet gonderiyoruz. 10 kisiye kadar ucretsiz
+kullanilabiliyor.
+Story, tache, bug ya da epic(ayni kategarideki story'ler epic kullanarak eklenebilir) eklemek icin ust kisimdaki créer 
+butonuna tiklamak gerek.
+==>Xray
+Ust kisimdaki appli secenegine tiklayip acilan pencereden "explorer plus d'apps" a tikliyoruz. Acilan sayfada arama kutusuna
+xray yaziyoruz. 30 gun ucretsiz sonrasinda aylik 10 usd odenerek kullaniliyor.
+
