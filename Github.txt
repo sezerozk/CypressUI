@@ -94,8 +94,8 @@ git commit -m ==>Buradaki -m message in kisaltilmis halidir.
 git log --oneline==>Komutu versiyonlari gormemizi sagliyor. Burada sari renkle gosterilen 7 haneli kisim
 versiyonun kimlik bilgisidir ve o versiyonda yapilan degisiklikleri gormek icin;
 git show 1111111(versiyon kimlik bilgisi-bu kod hash kodu olarak isimlendiriliyor) komutunu giryoruz.
-git log==> KOmutu ile versiyon bilgisinin yani sira versiyonun kim tarafindan ne zaman olusturuldugunu da
-gorebiliyoruz.
+git log==> Komutu ile versiyon bilgisinin yani sira versiyonun kim tarafindan ne zaman olusturuldugunu da
+gorebiliyoruz. Burada log kayit anlaminda kullaniliyor.
 ===>git add . komutu ile staging area ya gonderdigimiz kodlari nasil geri alabiliriz?
     git restore --staged .==>Bu kod ile stage deki tum dosyalari geri al demis oluyoruz. "." kismina dosya ismi
     yazarak sadece o dosyanin geri alinmasini saglayabiliriz.
@@ -114,7 +114,8 @@ gorebiliyoruz.
     -System parametresi kullanildiginda tum kullanicilar ve tum repolar uzerinde etkili olur.
     -Global parametresi gecerli kullanicinin tum repolari uzeinde etkili olur
     -local parametresi ise sadece gecerli repo uzerinde etkili olur
-    
+==>Version control
+
 
 
 
