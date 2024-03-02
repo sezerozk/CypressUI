@@ -119,7 +119,7 @@ gorebiliyoruz. Burada log kayit anlaminda kullaniliyor.
     -Global parametresi gecerli kullanicinin tum repolari uzeinde etkili olur
     -local parametresi ise sadece gecerli repo uzerinde etkili olur
 ==> Bir repo icerisinde birden fazla commit olabilir bu commitlerden en son alinan commit'e HEAD deniyor.
-==>DENEME
+
 
 
 
