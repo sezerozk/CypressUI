@@ -105,6 +105,10 @@ gorebiliyoruz. Burada log kayit anlaminda kullaniliyor.
     oldugu bir durumda once 3. versiypndan 2. versyina gecip daha sonrasinda git commit -m "" yoluyla mevcut versiyonu
     4. versiyon olarak kaydedersek 2. versiyonu 4. versiyon olarak yeniden tanimlamis ve bu arada 3. versiyionu da
     korumus oluyoruz.
+===>Diyelim ki mevcut bir versiyonun ustunde calismalar yaptik fakat kodlarimizi henur stagging area ya gondermedik. 
+    Ve yaptigimiz degisikliklerin hatali oldugunu fark ettik. Eger yaptigimiz degisiklikleri tek tek bulup silmek zor 
+    olacaksa "git restore ." diyerek son versiyonda yaptigimiz ve fakat henuz git commit - m "" kodu ile versiyonlamadigimiz
+    degisiklikleri geri alabiliyoruz.  
 ===>git remote add origin https://github.com/sezerozk/JS.git>bu kodun aciklamasi adresini verdigim repostory i kaynak
     olarak eklemek istiyorum. Hangi linke bagli oldumuzu gormek icin git remote -v ==> komutunu girmemiz gerek.
 ==>Git Configuration:
@@ -114,7 +118,8 @@ gorebiliyoruz. Burada log kayit anlaminda kullaniliyor.
     -System parametresi kullanildiginda tum kullanicilar ve tum repolar uzerinde etkili olur.
     -Global parametresi gecerli kullanicinin tum repolari uzeinde etkili olur
     -local parametresi ise sadece gecerli repo uzerinde etkili olur
-==>Version control
+==> Bir repo icerisinde birden fazla commit olabilir bu commitlerden en son alinan commit'e HEAD deniyor.
+
 
 
 
