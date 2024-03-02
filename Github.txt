@@ -100,12 +100,13 @@ gorebiliyoruz. Burada log kayit anlaminda kullaniliyor.
     git restore --staged .==>Bu kod ile stage deki tum dosyalari geri al demis oluyoruz. "." kismina dosya ismi
     yazarak sadece o dosyanin geri alinmasini saglayabiliriz.
 ===>Versiyon degistirme=>Son versiyonu silmeden onceki bir versiyonu yeni versiyon olarak yayinlama;
-    git checkout hash_kodu .=>komutunu girdigimiz zaman hash_kodunu girdigimiz versiyona donmus oluyoruz. Bu sekilde
+    git checkout hash_kodu .=>komutunu girdigimiz zaman hash_kodunu girdigimiz versiyona donmus oluyoruz. Dikkat edilmesi
+    gereken burada yaptigimiz sadece goruntuleme. Bu sekilde
     versiyonlar arasinda gecis yapabiliriz. Ifade etmejk gerekir ki bu yontemle verileri silmiyoruz. Ornegin 3 versiyonun
     oldugu bir durumda once 3. versiypndan 2. versyina gecip daha sonrasinda git commit -m "" yoluyla mevcut versiyonu
     4. versiyon olarak kaydedersek 2. versiyonu 4. versiyon olarak yeniden tanimlamis ve bu arada 3. versiyionu da
     korumus oluyoruz.
-===>Diyelim ki mevcut bir versiyonun ustunde calismalar yaptik fakat kodlarimizi henur stagging area ya gondermedik. 
+===>Diyelim ki mevcut bir versiyonun ustunde calismalar yaptik fakat kodlarimizi henuz stagging area ya gondermedik. 
     Ve yaptigimiz degisikliklerin hatali oldugunu fark ettik. Eger yaptigimiz degisiklikleri tek tek bulup silmek zor 
     olacaksa "git restore ." diyerek son versiyonda yaptigimiz ve fakat henuz git commit - m "" kodu ile versiyonlamadigimiz
     degisiklikleri geri alabiliyoruz.  
@@ -119,7 +120,14 @@ gorebiliyoruz. Burada log kayit anlaminda kullaniliyor.
     -Global parametresi gecerli kullanicinin tum repolari uzeinde etkili olur
     -local parametresi ise sadece gecerli repo uzerinde etkili olur
 ==> Bir repo icerisinde birden fazla commit olabilir bu commitlerden en son alinan commit'e HEAD deniyor.
-
+==> Versiyon silme;
+    git reset --hard hash_kodu-->bu kodu yazdigimizda hash_kodunu verdigimiz versiyon HEAD commit oluyor ve hash_kodunu
+    verdigimiz versiyonun ustundeki versiyonlarin silinmesini sagliyor. Bu sebeple bu kodla calisirken cok dikkatli 
+    olmak gerek. Cunku bu islemi geri alamiyoruz.
+==> git remote add origin repo_link->komutu ile projemiz ile repo'yu iliskilendiriyoruz.
+==> Kodlarimizi ilk defa push ederken: 
+    git push -u origin master kodunu kullaniyoruz.Bu kod ile orogon olarak tanittigimiz repo'ya buradaki master'i gonder
+    demis oluyoruz.   
 
 
 
