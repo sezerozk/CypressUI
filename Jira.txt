@@ -12,4 +12,18 @@ butonuna tiklamak gerek.
 ==>Xray
 Ust kisimdaki appli secenegine tiklayip acilan pencereden "explorer plus d'apps" a tikliyoruz. Acilan sayfada arama kutusuna
 xray yaziyoruz. 30 gun ucretsiz sonrasinda aylik 10 usd odenerek kullaniliyor.
-
+==>US vs eklemesini creer bolumununden yapiyoruz.
+==>Ekledigimiz US test case eklemek icin creer bolumunden Test secenegini seciyoruz. Summary bolumune basligini yaziyoruz. 
+    Asagidaki seceneklerden kime atanacagi, hangi US ile baglantili oldugu vs bilgilerini seciyoruz ve boylece US bagli bir TC 
+    olusturmus oluyoruz. Daha sonrasinda test adimlarini vs ilgili TC'e tiklayarak(acilan pencerede import secenegini secerek) 
+    import ediyoruz.
+==>Her gun (takimin kararina gore degisebilir) kosulacak testleri smoke test olarak isimlendirebiliriz. 
+==>Test set olusturma;
+    Testleri gruplandirmak icin kullaniyoruz.  
+==>Test Executor olusturma;
+    Yine créer bolumunden test executor olusturarak basliyoruz.
+==>Bug raporlama;
+    Adimlardan birinin fail olmasi testin fail olmasi anlamaina gelir.
+    Urun canliya cikmadan bulunan bug lara defect denir. 
+    Ekran resmi almak icin lightshot'u bilgisayara indirdim.
+    Ekrandan video kaydi icin scre.io yu chrome uzanti olarak ekledim. 

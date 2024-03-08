@@ -151,4 +151,15 @@ oluyoruz.
     cy.go(back) ya da cy.go(-1)
     cy.go(forward) ya da cy.go(1)
     cy.reload()-->sayfayi yeniler
- 
+==>Screenshot
+    Cypress otomatik olarak fail olan testlerde screenshot aliyor fakat biz iradi olarak screenshot 
+    almak istersek cy.screenshot() methodunu kullanabiliriz.
+    Bir de cypress o sirada acik olan sayfanin tamaminin ekran goruntusunu aliyor. Bunun yerine 
+    bir elementin ekran goruntusunu almak istersek yine bu methodu kullanabiliriz.
+==>Iframe;
+    Inline Frame kelimelerinin kisaltmasidir. Sayfa icinde baska sayfalari gomebilmek icin kullaniliyor. 
+    cypress-iframe eklentisi yuklenerek kullanilir. (npm install -D cypress-iframe) komutu ile yuklenir.
+    e2e.js dosyasina(support klasorunde bulunuyor) require('cypress-iframe') kodu eklenir.
+    cy.frameLoaded() ve cy.iframe() methodlari ile kullanilir.
+    cy.frameLoaded() methodu ile iframe alanini tanimlayip sonrasinda cy.iframe() methodu ile locate
+    alma islemini yapiyoruz.

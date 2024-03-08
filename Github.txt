@@ -52,7 +52,7 @@ git pull "remote repo'nun linki")
 Daha sonra artik bilgisayarimizda olan proje ile remote repostory'deki dosyayi ilintilemek icin=>
 Eger IntelliJ ile indirdiyesk git init ile baslamaliyiz fakat daha once git uzerinden indirdiysek
 git init komutunu daha once kullandigimiz icin tekrar etmemize gerek yok.
-Branch olusturmamiz gerek=> git branch -M main
+Branch olusturmamiz gerek=> git branch -M main(ya da master)
 git remote add origin "remote repo linki"
 git push -u origin main
 Bunlari yaptiktan sonra yereldeki repo ile remote repo ilintilenmis oldu. Simdi grup calismasi
@@ -64,6 +64,27 @@ gosteriyor.
 (PS C:\Users\33620\IdeaProjects\GitHub> git branch
    Sezer
  * main)
+    -Kod yazma islemini kesinlikle kendi branch'imizda yapamaliyiz.
+    -Gunluk olarak proje pull edilmeli ve en guncel hali uzerinde calisilmali. Fakat pull islemini
+    yaparken main-master branch'ta oldugumuzdan emin olmaliyiz. Guncel projeyi aldiktan sonra kendi
+    branchimizda git merge master-main komutu ile guncel dosyayi kendi branch'imiza da cekmis oluyoruz.
+    -Burada dikkat edilmesi gereken bir diger noktada push islemini kendi branch'imizda iken yapmamaiz
+    gerektigi. Yani master branch'da pull edip guncel hali kendi branch'imizla merge edip kodlarimizi
+    yaziyoruz ve push islemini de kendi branh'imizda yapiyoruz ve boylece remote repo'da merge islemi
+    yapilirken conflict olusmasinin onune gecmeye calisiyoruz. Bu yontem conflict olussa dahi kendi
+    branch'imizda islem yaptigimizdan kendi branchimiz ile master brach'i karsilastirarak conflict'in
+    kaynagini bulmayi kolaylastiriyor.
+    -Kendi branch'imizda push islemi yapmak icin 
+        git add .
+        git commit -m""-->Burada push isleminin kim tarafindan hangi tarihte yapildiginin komut yazmaya
+        gerek kalmadan gorulebilmesi icin "Sezer 03.03.2024" formatini kullanmak faydali olacaktir.
+==>Takim liderinin merge islemleri;
+    github'a push edilen dosyalar repo'da push islemini branch secildiginde gorulebiliyor.
+    ilgili branch secili iken "Contribute" e tiklandiginda "Open pull request" methodu yesil renkte 
+    cikiyorsa secili branchta yeni dosyalar bulundugu anlamina gelir ve yesil butona tikladiktqn sonra
+    "Merge pull request" butonunu gorecegiz ve tikladigimizda merge islemi yapilmis olacak.
+==>Conflict olustugu takdirde conflict github uzerinde cozulebildigi gibi kendi localimizde de cozebiliyoruz.
+
  Main branch'ten Sezer branch'ine gecebilmek icin
  git checkout Sezer komutunu kullaniyoruz.
  Bu islemden sonra artik kendi branc'imizde kad yaziyor olacagiz.
@@ -128,6 +149,11 @@ gorebiliyoruz. Burada log kayit anlaminda kullaniliyor.
 ==> Kodlarimizi ilk defa push ederken: 
     git push -u origin master kodunu kullaniyoruz.Bu kod ile orogon olarak tanittigimiz repo'ya buradaki master'i gonder
     demis oluyoruz.   
+==> git log --oneline komutu ile versiyonlari gordugumuzde parantez icerisinde kirmizi renkle origin/master aciklamasinin
+    bulundugu versiyonumuz bizim o sirada remote repo da bulunan versiyonumuz oluyor.
+==> Github repo'ya collaborator eklemek icin; repo'da ayarlar'a tiklayip soldaki menuden collaborator
+    secenegini seciyoruz.
+
 
 
 
