@@ -1,0 +1,56 @@
+==>UI icin e2e test'den bahsettigimizde bir fonksiyonun baglantili olan diger fonksiyonlarla birlikte test edilmesini
+    kastediyoruz. Ikinci anlami ise UI testi, API testi ve data base testinin yapilmasidir. Bu  testler genelde ayni framework'te fakat
+    farkli branch'de calisiliyor. 
+==>Olusturacagimiz framework hard coded olmamali datalar dinamik olarak cekilmeli.
+==>Java scripte class isimleri genelde kebap case yontemi ile olusturuluyor. Buraya yazacagimiz before()
+    ile class'in calismasindan once tek seferlik calismasini istedigimiz kodlari before() icerisine yaziyoruz.
+    beforeEach() her bir it blogundan once bir kere calisacak kodlar buraya yazilir.
+==>cypress'te yazdigimiz describe aslinda bizim class'imiz oluyor.
+==>datalari saklamak icin fixture klasorunun altinda creds.json isminde bir dosya olusturuldu. json=java scripte
+    object notation. Datalari saklamak icin json formati gayet kullanisli.
+==>API testing'de baseUrl'e ihtiyac duyuyoruz.
+==>json dosyasinda birden fazla {} ile birden fazla datayi tutmak istedigimizde [{}] formati ile array lestirmek gerek.
+==>Page object model'de onemli olan objelerin tekrar tekrar kullanima uygun olarak olusturulmasidir. Bu sebeple POM ile
+    calisirken locate alma gibi islemler test'in icerisinde degil test disinda yapilip, bulundugu yerden cagirilarak 
+    test'in icinde kullanilmalidir. Bunun icin pages adinda bir klasor olusturulabilir. Bu klasor e2e'nin altinda 
+    olusturulabilecegi gibi support altinda da olusturulabilir.
+    AddDeanPage.js adinda bir dosya olusturuldu. Bu dosya icerisine ayni isimle bir class oluturuldu ve dean eklemek
+    icin gerekli olan locate ler bu class icerisinde alindi. Daha sonra bu class'tan olusturulacak objelerle bu class'a
+    erisebilmek icin javascript geregi olarak sinifin disina; export default AddDeanPage; kodu eklendi. Locate'leri 
+    her ne kadar olusturdugumuz bu yeni class'ta alsak da geleneksek yontem ile yani cy.get('...') ile locate aldigimiz 
+    zaman tekrar kullanima uygun olmuyor ve bu turlu kullanim tavsiye edilmiyor. Bunun yerine iki farkli yontem kullanabiliriz.
+    Birincisi locate alma islemini bir method icerisinde yapip locati method icerisinde return ederiz ve bu methodu
+    test icerisinde cagirarak locati tekrar tekrar kullanmis oluruz. Ikinci secenek ise diyelim ki aldigimiz locate'e
+    click leyecegiz. Bu click islemini de method icerisinde yapip sadece methodu test icerisinde cagiriyoruz. Testte 
+    kullanilan datalarin testin icerisinde bulunmasi istenmeyen ve acemice bir durumdur. Bundan kacinmak icin kullancagimiz
+    datalari koymak icin fixture'un altinda register-data.json adinda bir dosya olusturduk.
+    -->Login islemi surekli yapilacagi icin login olmak icin commands.js dosyasinin icinde reusable bir method olusturuldu. Bunun icin su kodlari yazdik;
+    Cypress.Commands.add('method ismi',(email,password)=>{
+        login butonuna tikla
+        cy.get('...').click();
+        kullanici adi gir 
+        cy.get('...').type(username)
+        password gir
+        cy.get('...').type(password)
+        login butonuna tikla
+        cy.get('...').click();
+    })
+    Sonrasinda cy.login(parametreler) diyerek methodu cagiriyoruz. Bilindigi gibi methodun parametreleri olan 
+    username ve password'un dogrudan yazilmasi hard coded oluyor ve istenmiyor.
+==>Cypress framework'te bulunan commands.js - cypress.config.js dosyalarda bulunan degiskenler otomatik olarak framework'te
+    bulunan tum class'lar tarafindan gorulur. Fakat AddDeanPage dosyasi icerisinde olusturudugumuz methodlar test 
+    class'imizda otomatik olarak gorulmeyecektir. Bunun icin AddDeanPage class'ini export default AddDeanPage; kodu ile 
+    export ettikten sonra test class'ta da import etmemiz gerek. Bunun icin import AddDeanPage from"dosya yolu" kodunu 
+    kullaniyoruz. Daha sonrasinda bu sayfadan olusturacagimiz bir object ile bu sayfada yer alan methodlari kullanabiliriz.
+    const deanPage = new AddDeanPage(); kodu ile object olusturmus oluyoruz.
+==>fixture klasoru altindaki dosyalar da otomatik olarak tum framework te gorulebilir. Bunun icin cy.fixture() methodunu
+    kullaniyoruz. Kisaca anlatmak gerekirse;
+    cy.fixture("creds").then((data)=>{
+        Burada fixture den sonra kullandigimiz then() methodu creds dosyasi icerisindeki datalari otomatik olarak
+        return etmis oluyor ve kullanabiliyoruz. Bu otomatik return gibi bazi yerlerde js oldukça kullanisli ve 
+        avantajli oluyor. Gelen datayi bir degiskenle tutmak gerektigi icin then icerisine data parametresini ekliyoruz
+        ve data degiskeni uzerinden kullaniyoruz. Yani creds dosyasi icerisindeki datalar artik data degiskenin 
+        icerisinde olmus oluyor.
+    })
+
+

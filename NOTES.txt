@@ -163,3 +163,12 @@ oluyoruz.
     cy.frameLoaded() ve cy.iframe() methodlari ile kullanilir.
     cy.frameLoaded() methodu ile iframe alanini tanimlayip sonrasinda cy.iframe() methodu ile locate
     alma islemini yapiyoruz.
+==>Shadow root;
+    Almak istedigimiz locate shadow root icerisinde ise tipki iframe de oldugu gibi dogrudan locate ' erisemiyoruz.
+    Oncelikle shadow root icerisine girip daha sonra locate almamiz gerekmekte. Bunun icin shoadow root'un icerisinde 
+    oldugu elementin locatini alip hemen sonrasinda shadow() methodu ile buranin shadow alani oldugunu belirterek
+    islemlerimize devam ediyoruz.
+==>Faker;
+    Sahte datalar ureterek otomasyonda kullanmak icin faydalaniyoruz. Bunun icin faker eklentisinin kurulmasi gerekiyor.
+    npm install --save-dev @faker-js/faker komutu ile eklenti kurulur
+    e2e.js dosyasina require('@faker-js/faker') kodu eklenir.

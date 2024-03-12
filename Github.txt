@@ -64,13 +64,13 @@ gosteriyor.
 (PS C:\Users\33620\IdeaProjects\GitHub> git branch
    Sezer
  * main)
-    -Kod yazma islemini kesinlikle kendi branch'imizda yapamaliyiz.
+    -Kod yazma islemini kesinlikle kendi branch'imizda yapmaliyiz.
     -Gunluk olarak proje pull edilmeli ve en guncel hali uzerinde calisilmali. Fakat pull islemini
     yaparken main-master branch'ta oldugumuzdan emin olmaliyiz. Guncel projeyi aldiktan sonra kendi
     branchimizda git merge master-main komutu ile guncel dosyayi kendi branch'imiza da cekmis oluyoruz.
-    -Burada dikkat edilmesi gereken bir diger noktada push islemini kendi branch'imizda iken yapmamaiz
+    -Burada dikkat edilmesi gereken bir diger noktada push islemini kendi branch'imizda iken yapmamiz
     gerektigi. Yani master branch'da pull edip guncel hali kendi branch'imizla merge edip kodlarimizi
-    yaziyoruz ve push islemini de kendi branh'imizda yapiyoruz ve boylece remote repo'da merge islemi
+    yaziyoruz ve push islemini de kendi branch'imizda yapiyoruz ve boylece remote repo'da merge islemi
     yapilirken conflict olusmasinin onune gecmeye calisiyoruz. Bu yontem conflict olussa dahi kendi
     branch'imizda islem yaptigimizdan kendi branchimiz ile master brach'i karsilastirarak conflict'in
     kaynagini bulmayi kolaylastiriyor.
@@ -147,13 +147,26 @@ gorebiliyoruz. Burada log kayit anlaminda kullaniliyor.
     olmak gerek. Cunku bu islemi geri alamiyoruz.
 ==> git remote add origin repo_link->komutu ile projemiz ile repo'yu iliskilendiriyoruz.
 ==> Kodlarimizi ilk defa push ederken: 
-    git push -u origin master kodunu kullaniyoruz.Bu kod ile orogon olarak tanittigimiz repo'ya buradaki master'i gonder
+    git push -u origin master kodunu kullaniyoruz.Bu kod ile origin olarak tanittigimiz repo'ya buradaki master'i gonder
     demis oluyoruz.   
 ==> git log --oneline komutu ile versiyonlari gordugumuzde parantez icerisinde kirmizi renkle origin/master aciklamasinin
     bulundugu versiyonumuz bizim o sirada remote repo da bulunan versiyonumuz oluyor.
 ==> Github repo'ya collaborator eklemek icin; repo'da ayarlar'a tiklayip soldaki menuden collaborator
     secenegini seciyoruz.
-
+==>(11.03.2024) Staj projesi calismasinda github'da aldigim hata sonrasi cikarimlarim;
+    1- Projeyi pull ettikten sonra git branch -M master komutu ile master branch'i olusturdum. Kendimce 
+    master branch'in zaten orade oldugunu biz ancak ikinci bir branch eklemek istiyorsak branch olusturdugumuzu
+    dusunuyordum. Yanlismis ve zaman kaybetmeme sebep oldu. 
+    2- Sonrasinda yine master branch'te iken remote repoyu ilintilemek icin git remote add origin remote repo linki
+    komutunu girdik.
+    3- git push -u origin master kodundan sonra ilintileme islemi gerceklesti.
+    4- Sonrasinda sezer adinda yeni bir branch olusturdum. Bu branch'te iken git add . sonra git commit -m ...
+    ve git push islemini yaptigimda "The current branch sezer has no upstream branch" uyarisini aldim. Yani
+    mevcut sezer branch'inde bir upstream branch olmadigini dolayisiyla gondermek istedigim kodlari remote
+    repoda hangi branch altinda gonderecegimi bilmedigini ve bu sebeple gonderemedigimi soyluyor. Bunu asmak 
+    icin git'in onerdigi kod blogu olan git push --set-upstream origin sezer komutunu kullandim ve boylece
+    remote repodaki branch'in adinin da sezer olmasini saglamis oldum ve push islemini yapabildim. Bu durum
+    sanirim iki saatime mâl oldu. Yorucu ama ayni zamanda ogreticiydi. 
 
 
 
