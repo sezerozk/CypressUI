@@ -172,3 +172,19 @@ oluyoruz.
     Sahte datalar ureterek otomasyonda kullanmak icin faydalaniyoruz. Bunun icin faker eklentisinin kurulmasi gerekiyor.
     npm install --save-dev @faker-js/faker komutu ile eklenti kurulur
     e2e.js dosyasina require('@faker-js/faker') kodu eklenir.
+==>cy.writeFile('dosya yolu','saklanacak degiskenin ismi')
+    cy.writeFile('datas/email.txt',email) gibi seklinde bir yazim ile projenin ana klasorunde
+    datas isimli bir klasor ve onun icinde email isimli bir dosya olusturduk ve email 
+    degiskenini o dosya icerisine yazdirdik. Bu sekilde bir testte olusturdugumuz datayi
+    baska classta bulunan bir testte bu dosya uzerindne kullanabiliriz. Dikkat edilmesi gereken
+    ayni dosyaya tekrar ekleme yapildiginda eskisini silerek yenisini yaziyor.
+==>dosyaya yazdigimiz datalari kullanabilmek icin;
+    cy.readFile('datas\email.txt').then((email)=>{
+
+            cy.get('#email').type(email);
+        }) seklinde bir kod blogu olusturmak gerek. Bu sekilde bir testde olsuturdugumuz datayi baska bir testde 
+    ayni class'ta olmasalar dahi mumkun olabiliyor. Bu kullanim bir cok yerde ise yarayabilir.
+==>Parent child iliskisi uzerinden element arama > isareti ile arama yapildigi zaman sacede belirtilen parentin
+    cocuklari arasinda arama yapilmis oluyor. Fakat bunun yerine bosluk( ) birakarak arandiginda ise belirtilen
+    parent'in tum altsoylari arasinda arama yapilmis oluyor. 
+==>wrap() methodu; wrap kelime anlami olarak sarmalamak demek.
