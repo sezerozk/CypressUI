@@ -178,6 +178,9 @@ oluyoruz.
     degiskenini o dosya icerisine yazdirdik. Bu sekilde bir testte olusturdugumuz datayi
     baska classta bulunan bir testte bu dosya uzerindne kullanabiliriz. Dikkat edilmesi gereken
     ayni dosyaya tekrar ekleme yapildiginda eskisini silerek yenisini yaziyor.
+    writeFile() ile json data turunde dosyalar da olusturabiliyour. Fakat bu dosyalari readFile() ile okuyamiyoruz.
+    Esasen bu da bir problem degil cunku json dosyalarini fixtures klasorune koyup cy.fixture() methodu ile
+    icerisindeki verileri kullanabiliriz.
 ==>dosyaya yazdigimiz datalari kullanabilmek icin;
     cy.readFile('datas\email.txt').then((email)=>{
 
@@ -188,3 +191,22 @@ oluyoruz.
     cocuklari arasinda arama yapilmis oluyor. Fakat bunun yerine bosluk( ) birakarak arandiginda ise belirtilen
     parent'in tum altsoylari arasinda arama yapilmis oluyor. 
 ==>wrap() methodu; wrap kelime anlami olarak sarmalamak demek.
+    cy.wrap() methodu, cypress asenkron calisma ozelligine uygun olarak, non-Cypress degerlerini, jQuery objelerini
+    veya asenkron islemlerin sonuclarini Cypress test zincirine dahil etmek icin guclu bir aractir.
+    1- Javascript degiskenlerini cypress komut zincirine dahil etme; testler sirasinda js degiskenleri ve hesaplamalari
+    kullanmak gerekebilir ve bu degiskenleri cypress komut zincirine dahil etmek icin wrap() methodunu kullaniriz.
+    Ornegin; 
+    const myObject = { key: 'value' };
+    cy.wrap(myObject).should('have.property', 'key', 'value'); Burada myObject js degiskenini cypress in should 
+    methodu ile kullanabilmek icin wrap() methodu kullanildi.
+    2-JQuery objeleri uzerinde cypress komutlarini kullanma; testlerde bazen dogrudan DOM elementlerini islemek
+    icin jQuery kullanilabilir..then() ya da baska methodlarla elde edilen jQuery objeleri uzerinde cypress komutlarini
+    kullanabilmek bu objeleri wrap() methodu ile sarmalamaliyiz. Ornegin;
+    cy.get('.my-list').then($list => {
+        const firstItem = $list.first(); // jQuery objesi
+        cy.wrap(firstItem).click(); // Cypress komutunu kullanabilmek için wrap kullanılır
+    });
+==>expect() ile dogrulama; should methodunu dogrudan kullanamiyoruz ya method zincirinde ya da cy.should() seklinde
+    kullanioyruz. Fakat expect() kullanirken boyle bir zorunluluk yok.
+ 
+ 
