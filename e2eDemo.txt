@@ -52,5 +52,85 @@
         ve data degiskeni uzerinden kullaniyoruz. Yani creds dosyasi icerisindeki datalar artik data degiskenin 
         icerisinde olmus oluyor.
     })
+==>POM yapisi geregi bir sayfaya ait locateler test icerisinde alinmadigi gibi methodlar da test class icersinde olusturulmaz
+    bunun yerine ilgili sayfa icin pages klasoru icerisinde bir sayfa olusturulur ve bu islemler orada yapilir.
+
+==>API DEMO NOTLARI
+    API testinde ornegin UI da olusturdugumuz bir kullanicinin girilen bilgilerin backend de dogru olarak gorulup 
+    gorulmediginin testi yapilabilir.
+    -->e2e klasorunun altinda API testing adinda bir klasor olusturduk.
+    -->API ile calisirken sisteme baglanabilmek icin token uretmemiz gerekiyor. Bu token uretme islemi her bir giris
+        islemi icin gerekli oldugundan token uretme islemini support klasorunun altindaki command.js dosyasinda
+        yapiyoruz. Istenirse fixtures altinda bir json dosyasi da kullanilabilir ama command.js daha mantikli. Token 
+        post request ile uretilir.
+        Cypress.Comamnd.add('generateToken',(username,password)=>{
+            const body = {
+                username:username,
+                password:password
+            }
+
+            cy.request({
+                method:"POST",
+                url:"swagger dokumanindan login gerekli url alinmali",
+                body:body,
+                headers:{
+                    Content-Type:"application/json"
+                }
+            }).then((response)=>{
+                return response.body.token;
+            });
+        })  
+        Ek bilgi olarak JS'in java'dan farkli gibi yukaridan asagi dogru calismadigi bazi durumlar olabiliyor. Ozellikle
+        advance methodlar kullanildigi durumlarda boyle seylerle karsilasabiliyoruz. Burada hata almamak icin yukaridaki
+        gibi .then() ile calisiyoruz. Boylece request isleminin gerceklesmesini ve daha sonra then'in icersindeki islemlerin
+        yapilmasini saglamis oluyoruz. Hatta arka arkaya birden fazla kere then() methodunu kullanabiliriz.
+    -->Token alma isleminin it blogu icerisinde yapilmasi:
+        it('',()=>{
+            cy.generateToken(username,password).then(
+                generateToken() methodunu calsitirdigimizda token'i return ettigi icin then() methodu icersinde dogrudan
+                token'i kullanabiliyoruz. 
+                (token)=>{
+                    console.log(token) diyerek aldigimiz token'i console'a yazdiriyoruz. Burada dikkat edilmesi gereken
+                    nokta gelen token'in turunun token'in basinda yazmasi gerektigi. Ornegin bu API'da bearer token
+                    oldugu belirtilerek geliyor. Fakat token'in turu belirtilmeseydi bu belirtme islemini bizim manuel
+                    yapmamaiz gerekecekti. 
+                    cy.request({
+                        method:"GET",
+                        url:"....",
+                        headers: {
+                            Authorization: `${token}`
+                        }
+                    }).then((response)=>{
+                        Yapmak istedigimiz assertion lari burada yapiyoruz.
+                        axpect(response.status).to.eq(200);Ornek olarak status code'a bakalim.
+                        console.log(response.body) diyerek response body'i gorebiliriz boylece body'i gormek icin 
+                        ayrica Postman'a bakmaya gerek kalmiyor.
+                        expect(
+                            response.body.some((user)=>user.name===userData[0].deanName)
+                        ).to.be.true;
+                        Kisaca aciklamak gerekirse; some((user)=>user.name===userData[0].deanName) kismi true ya da false
+                        bir deger donduruyor. Aranan data varsa true yoksa false dondugunden aranan datanin database olup
+                        olmadigini kontrol etmis oluyoruz.
+                        -->Birden fazla dogrulamayi chain sistemi kullanarak daha kisa sekilde yapabiliriz. Ornegin;
+                        expect(
+                            response.body.some(
+                                (user)=>{
+                                    user.name===userData[0].deanName &&     |Burada yapilan dogrulamalardan herhangi 
+                                    user.username===userData[0].username && |birisi fail olacak olursa testimiz fail 
+                                    user.ssn===userData[0].ssn              |edecek. Tabi bu durul bu dogrulamar bagimsiz
+                                })                                          |olarak yapilsa da degismeyecek.
+                        ).to.be.true;
+                    })
+                })
+        }) 
+    -->JS some function; bir list'te aranan elemanin var olup olmadigini dogrulamak icin some function kullanilabilir.
+        const ages = [3,5,6,19,52]  --> |Kisaca acikalamak gerekirse; checkAdult() fonksiyonu ile ages isimli array 
+        ages.some(checkAdult);          |icerisindeki degerlerden en azindan bir tanesinin 18'den buyuk olup olmadigini    
+        function checkAdult(age){       |kontrol ediyor ve en azindan bir tanesi 18'den buyuk ise true aksi halde false
+            return age>18               |donduruyor.
+        }
+        Yine some disinda "any" ve "every" isimli fonksiyonlar testlerin yapilisini bir hayli kolaylastiracaktir. Bu 
+        sebeple kullanimlarini bilmek ve gerekli yerlerde kullanmak gerek.
+
 
 
