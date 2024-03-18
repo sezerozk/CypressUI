@@ -105,6 +105,9 @@
                         axpect(response.status).to.eq(200);Ornek olarak status code'a bakalim.
                         console.log(response.body) diyerek response body'i gorebiliriz boylece body'i gormek icin 
                         ayrica Postman'a bakmaya gerek kalmiyor.
+                        expect(response.body[response.body.lenghth-1]).to.have.property("username");
+                        response body icerisinde gelen en son elemanda username property sinin olup olmadigini 
+                        kontrol ediyoruz.
                         expect(
                             response.body.some((user)=>user.name===userData[0].deanName)
                         ).to.be.true;
@@ -131,6 +134,72 @@
         }
         Yine some disinda "any" ve "every" isimli fonksiyonlar testlerin yapilisini bir hayli kolaylastiracaktir. Bu 
         sebeple kullanimlarini bilmek ve gerekli yerlerde kullanmak gerek.
+    -->Su an projede rest API kullaniyoruz.
+    -->API Call ile dean olusturmak(POST Request);
+        APi call ile cok hizli bir sekilde dean olusturabiliriz. Fakat calisma hayatinda tester lar genel itibari
+        ile get request ile calisirlar ve database in beklenen gibi olup olmadigini kontrol ederler.
+        -->Ilk olarak command.js dosyasinda reusable bir method olusturuyoruz.
+            Post request 0'dan data olusturumak icin put request var olan datada degisiklik yapmak icin kullanilir.
+            Cypress.Commands.add('addDean',(token,deanData)=>{
+                cy.request({
+                    method: "POST",
+                    url: ".....",
+                    headers: {
+                        Authorization: `${token}`,
+                        Content-Type: "application/json",
+                    },
+                    body: deanData
+                });
+            });
+        -->Test class'inda yapilanlar;
+        it('cerate dean', ()=>{
+            cy.generateToken(username,password).as('authToken');    |ILk olarak uygulamaya girmak icin gerekli token i 
+                                                                    |aliyoruz ve authToken'a atama yapiyoruz.
+            cy.get('@authToken').then((authToken)=>{
+                const deanData = {
+                    ...
+                }
+                cy.addDean(authToken,deanData);
+            })
+        });
+==>Database Testi;
+    -->Esasn cypress'in oncelikli amaci e2e UI testleri yapmak. Bu sebeple cypress ile database testi yapabiliyoruz
+    ancak configuration yapmaya ihtiyac duyuyoruz. Oncelikle postgreSQL kullanildigi icin postgreSQL yuklemek gerek.
+    Bunun icin "npm install pg" komutunu kullaniyoruz. Database testi kullanilan database tipine(postgreSQL, 
+    oracle SQL gibi) gore degisiklik icerebiliyor. Bu sebeple burada postgreSQL icin gerekli ayarlamari gorecegiz.
+    Daha sonrasinda cypress.config.js dosyasi uzerinden bazi ayarlamalar yapmamiz gerek. ilgili sayfanin kod yapisi
+    asagidaki gibi olmali;
+        const { defineConfig } = require("cypress");
+        //for postgre sql
+        const { Pool } = require("pg");     |Yukledigimiz pg'de Pool isimli bir class var. Java'daki jdbc'ye benziyor.
+        
+        const dbConfig = {                  |Burada belirtilen bilgiler database giris bilgilerimiz.
+        user : "select_user",
+        host : "managementonschools.com",
+        database : "school_management",
+        password : "43w5ijfso",
+        port : 5432
+        } 
+        
+        module.exports = defineConfig({
+        e2e: {
+            setupNodeEvents(on, config) {
+            // implement node event listeners here
+            
+            on('task',{                                     |Burada database'e giris yapip alinan bilgiler return
+                async connectDB(query){                     |result ile bize donduruluyor.
+                const pool = new Pool(dbConfig);
+                const results = await pool.query(query);
+                await pool.end(); 
+                return results
+                }
+            })
+            
+            },
+            baseUrl: "https://dummy.restapiexample.com",    |Buradaki baseUrl esasen dogru degil fakat cypress bazen
+                                                            |burada bir baseUrl bulunmadigi zaman hata veriyor ve calismiyor
+        },                                                  |cypress.config.js dosyasinda her ihtimalde bir baseUrl 
+        });                                                 |bulundurmak faydali olacaktir.
 
 
 
