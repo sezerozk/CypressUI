@@ -23,3 +23,9 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+Cypress.Commands.add('magentoLogin',(email,password)=>{
+    cy.contains('Sign In').click();
+    cy.get('#email').type(email);
+    cy.get('#pass').type(password);
+    cy.get('#send2').click();
+})

@@ -208,5 +208,28 @@ oluyoruz.
     });
 ==>expect() ile dogrulama; should methodunu dogrudan kullanamiyoruz ya method zincirinde ya da cy.should() seklinde
     kullanioyruz. Fakat expect() kullanirken boyle bir zorunluluk yok.
+==>cy.fixture() methodu it blogu yani test disinda kullanilamiyor.
+==>Hooks; Mocha ile birlikte cypress'e gelen methodlardir. 
+    before()        -->Ilk test baslamadan once bir kez calisir
+    after()         -->Tum testler tamamnlandiktan sonra bir kez calisir
+    beforeEach()    -->Her testten once calisir
+    afterEach()     -->Her testten sonra calisir
+    before() hook datalarin olusturulmesi icin avantajli olabilir ya da before ile veri tabani 
+    baglantisi yapip after hook ile bu baglantiyi kesebiliriz.
+
+==>cy.fixture() methodu default olarak fixtures klasoru icerisindeki dosyalara ulasir. Bu 
+    sebeple fixtures klasoru altindaki bir dosya icin sadece dosyanin adinin yazilmasi icindeki datalara ulasmak
+    icin yeterli olur ancak baska bir klasor icerisinden veri cekmek isteniyorsa dosya yolu tam verilmelidir.
+==>Custom Commands; cok sik kullandigimiz bazi islemler icin istersek kendimiz de method olusturabiliriz. reusable  
+    method olarak dusunulebilir. Custom command'lar support klasorunun altindaki commands.js dosyasi icerisinde 
+    olusturuluyor. Custom command lar parametreli ya da parametresiz sekilde olusturulabilir.
+    Method olusturma syntax'i;
+    Cypress.Commands.add('Method ismi', (parametreler)=>{
+
+    })
+
+==>Special character sequence: { enter } is not recognized. Available sequences are: selectAll, moveToStart, 
+    moveToEnd, del, backspace, esc, enter, rightArrow, leftArrow, upArrow, downArrow, home, end, insert, pageUp, 
+    pageDown, {, alt, option, ctrl, control, meta, command, cmd, shift
  
  
