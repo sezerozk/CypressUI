@@ -86,7 +86,10 @@
         yapilmasini saglamis oluyoruz. Hatta arka arkaya birden fazla kere then() methodunu kullanabiliriz.
     -->Token alma isleminin it blogu icerisinde yapilmasi:
         it('',()=>{
-            cy.generateToken(username,password).then(
+            -->Eger aldigimiz token'i test icerisinde birden fazla defa kullanmak gerekliyse token'i then() icerisinde 
+            degilde su sekilde kullanmak daha mantikli.
+            cy.generateToken(username,password).as('authToken');    |Dedigimizde artik token'i authToken degiskenine
+            cy.generateToken(username,password).then(               |atamis oluyoruz.
                 generateToken() methodunu calsitirdigimizda token'i return ettigi icin then() methodu icersinde dogrudan
                 token'i kullanabiliyoruz. 
                 (token)=>{
@@ -200,6 +203,46 @@
                                                             |burada bir baseUrl bulunmadigi zaman hata veriyor ve calismiyor
         },                                                  |cypress.config.js dosyasinda her ihtimalde bir baseUrl 
         });                                                 |bulundurmak faydali olacaktir.
+    -->Database testine iliskin it blogu;
+        it("Dean validation", ()=>{
+            cy.task("connectDB",(-Burada query veriyoruz suan icin hard coded bir query verebiliriz- select * from dean-))
+            .then((userData)=>{ |Boylece dean table'inda bulunan datalar userData icerisine alinmis oldu.
+                expect(
+                    userData.rows.some(
+                        (eachUser)=>    |Burada {} kullanmadigimiza dikkat etmek gerek.
+                            eachUser.username ===userData[0].username &&
+                            eachUser.ssn ===userData[0].ssn &&
+                            eachUser.phone_number ===userData[0].phone
+                    )
+                ).to.be.true;
+            })
+        })
+==>Cypress vs Cypress Cucumber
+    -->Selenium ile calisirken cucumber'a ihtiyac duyuluyor cunku ozellikle raporlama konusunda cypress zayif 
+    kalabiliyor. Ancak cypress ile calisirken cok fazla ihtiyac duyulmayabilir. Yine de cypress cucumber framework ile
+    kullanilmak istenirse kullanilabilir ve framework'e renk katilmis olur. Cypress ile birlikte cucumber kullanmayi
+    bilmek arti bir deger olarak kabul ediliyor. Bazen yorucu hatalar alinabildigi de goz onunde bulundurulmalidir.
+    -->Similarities:
+        - Data dosyalari;creds.json, register-data.json ...
+        - Page classes; yine support'un altinda .js uzantili page class'lar kullanabiliyoruz.
+        - Reusable methodlar; commands.js dosyasi icerisinde olusturuyoruz.
+        - It blogunun icindeki test kodlari; Buradaki farklilik Cucumber'daki feature filolarina aktarilirkenki 
+        siralama olabilir. Bir it blogunun icindeki kodlar birden fazla step defenitions'a aktarilabilir.
+        Daha net olarak ifade etmek gerekirse POM yapisi ve test kodlarinda herhangi bir degisiklik olmuyor.
+    -->Differencies;
+        - En onemli farkliliklardan bir tanesi .feature uzantili feature dosyalari. Bir diger onemli fark .js uzantili 
+        step definition dosyalari. Step defınıtıon ıcersındekı kod siralamasi onemli degildir. Kodlar feature dosyasindaki
+        given, when, then seklindeki siralmaya gore calisir.
+        - Installation kismi farkli.
+        - Feature file; Cucumber'da ek feature dosyasi bulunur ve test adimlari buraya yazilir. Burada tanimlanan her bir
+        adima karsilik gelen bir step definition olmasi sarttir.
+        - Step defınıtıon; Teknık test kodlarinin yazildigi kisimdir. Bir framework'te ayni isimle birden fazla step 
+        definition olamaz. 
+        - Config file; Cucumber'daki cypress.config.js dosyasindaki ayarlar, feature dosyalarinin calistirilabilmesi 
+        icin duzenlenmelidir. Ayrica tsconfig.json gerekebilir. Ayarlar arasinda, Custom Parameters'daki setting.json'a
+        step definition yolunun eklenmesi gerekebilir.
+
+
 
 
 
