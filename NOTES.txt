@@ -209,7 +209,9 @@ oluyoruz.
 ==>expect() ile dogrulama; should methodunu dogrudan kullanamiyoruz ya method zincirinde ya da cy.should() seklinde
     kullanioyruz. Fakat expect() kullanirken boyle bir zorunluluk yok.
 ==>cy.fixture() methodu it blogu yani test disinda kullanilamiyor.
-==>Hooks; Mocha ile birlikte cypress'e gelen methodlardir. 
+==>Hooks; Mocha ile birlikte cypress'e gelen methodlardir. Tekrar olmasi acisindan describe ve it bloklari da
+    mocha ile gelen ozelliklerdir. Chai ise daha cok assertion yaparken kullandigimiz ozellikleri barindiriyorlar.
+    Bu iki framework'te cypress icinde gomulu olarak gelen frameworklerdir.
     before()        -->Ilk test baslamadan once bir kez calisir
     after()         -->Tum testler tamamnlandiktan sonra bir kez calisir
     beforeEach()    -->Her testten once calisir
@@ -231,5 +233,11 @@ oluyoruz.
 ==>Special character sequence: { enter } is not recognized. Available sequences are: selectAll, moveToStart, 
     moveToEnd, del, backspace, esc, enter, rightArrow, leftArrow, upArrow, downArrow, home, end, insert, pageUp, 
     pageDown, {, alt, option, ctrl, control, meta, command, cmd, shift
- 
+==>BaseUrl; baseUrl cypress.config.js dosyasinda e2e nun icine eklenir. BaseUrl bir kere tanimlandiktan sonra visit
+    methodu ile calisirken adres yazmak yerine baseUrl in kullanildigini belirtmek icin cy.visit('/'); komutu yeterli 
+    olacaktir.
+    - Sitedeki diger path leri env ismiyle olusturulan dosya icerisine ekleyip kullanabiliriz. env icerisinde olusturdugumuz
+        degiskenleri Cypress.env('') ile cagirip kullaniyoruz.
+==>Cypress Session; Test yaparken birden fazla kere yaptigimiz islemleri cypress'in hafizasina almasini ve birinciden 
+    sonraki seferlerde islemin daha az eforla ve daha hizli yapilmasini sagliyor.  
  
