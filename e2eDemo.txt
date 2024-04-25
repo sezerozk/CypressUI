@@ -80,7 +80,7 @@
                 return response.body.token;
             });
         })  
-        Ek bilgi olarak JS'in java'dan farkli gibi yukaridan asagi dogru calismadigi bazi durumlar olabiliyor. Ozellikle
+        Ek bilgi olarak JS'in java'dan farkli olarak yukaridan asagi dogru calismadigi bazi durumlar olabiliyor. Ozellikle
         advance methodlar kullanildigi durumlarda boyle seylerle karsilasabiliyoruz. Burada hata almamak icin yukaridaki
         gibi .then() ile calisiyoruz. Boylece request isleminin gerceklesmesini ve daha sonra then'in icersindeki islemlerin
         yapilmasini saglamis oluyoruz. Hatta arka arkaya birden fazla kere then() methodunu kullanabiliriz.
@@ -123,7 +123,7 @@
                                 (user)=>{
                                     user.name===userData[0].deanName &&     |Burada yapilan dogrulamalardan herhangi 
                                     user.username===userData[0].username && |birisi fail olacak olursa testimiz fail 
-                                    user.ssn===userData[0].ssn              |edecek. Tabi bu durul bu dogrulamar bagimsiz
+                                    user.ssn===userData[0].ssn              |edecek. Tabi bu durum bu dogrulamar bagimsiz
                                 })                                          |olarak yapilsa da degismeyecek.
                         ).to.be.true;
                     })

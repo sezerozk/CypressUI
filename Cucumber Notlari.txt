@@ -1,0 +1,242 @@
+CYPRESS KURULUMU
+1-Masa ustunde(Ya da nerede olusturmak istersen) proje klasor' u olustur, sag tus yap  vscode ile ac
+2-Cypress yukleme asamalarini takip et
+-(Terminalde)  npm init
+	package name: (default olarak olusturulan klasorun ismi gelir, onu degistirmiyoruz.) -> Enter ile geciyoruz
+	version: (1.0.0) -> Enter ile geciyoruz
+	description: (Projemizi tanımlıyoruz: Cypress B249 Cucumber Framework olabilir) -> Enter ile geciyoruz
+	entry point: (index.js) -> Enter ile geciyoruz
+	test command: -> Enter ile geciyoruz
+	git repository: -> Enter ile geciyoruz (GitHub baglantisi daha sonra yapilacak)
+	keywords: -> Enter ile geciyoruz
+	author: (Ad-soyad ya da proje grubunun ismi yazilabilir) -> Enter ile geciyoruz
+	license: -> Enter ile geciyoruz
+- Is this OK? (yes) -> Enter ile geciyoruz
+Buraya kadar yaptiklarimizdan sonra package.json dosyamiz olusur, girdigimiz bilgiler o dosyanin icinde gorulebilir.
+Sira Cypress'in kurulumunda:	
+-(Terminalde)  npm install --save-dev cypress
+-(Terminalde)  npx cypress open (browserda acilan cypress sayfasinda gerekli bolumleri sec)
+E2E Testing -> Continue -> Browser secilir -> (Chrome secilmis ise) StartE2E Testing in Chrome -> Create new spec (bos bir spec dosyasi olusturur) -> Create spec -> Okay,run the spec
+Boylece Cypress kurulumu tamamlanmis oldu. Sira Cucumber kurulumunda.
+
+********************************
+CUCUMBER KURULUMU
+npmjs.com/package/@badeball/cypress-cucumber-preprocessor adresinde kurulumun detaylari var.
+3- (Terminalde)   npm install --save-dev @badeball/cypress-cucumber-preprocessor  =>Enter
+Bu islemi yaptiktan sonra package.json dosyamiz icinde devDependencies altinda "badeball/cypress-cucumber-preprocessor": "^20.0.1" olusmali.
+*******************************
+cypress.config.js dosyasinin icindeki herseyi sil, dosyanin adini cypress.config.ts olarak degistir (dosya uzerinde iken right click->rename->cypress.config.ts)
+cypress.config.ts dosyasinin icine asagidaki kodu oldugu gibi yapistir.
+(Kodun guncel hali https://github.com/badeball/cypress-cucumber-preprocessor/blob/HEAD/docs/quick-start.md adresinde. Bu sayfaya girip Example setup basligi altinda yer alan kodu kopyaladik)
+
+import { defineConfig } from "cypress";
+import * as createBundler from "@bahmutov/cypress-esbuild-preprocessor";
+import { addCucumberPreprocessorPlugin } from "@badeball/cypress-cucumber-preprocessor";
+import { createEsbuildPlugin } from "@badeball/cypress-cucumber-preprocessor/esbuild";
+export default defineConfig({
+  e2e: {
+    specPattern: "**/*.feature",
+    async setupNodeEvents(
+      on: Cypress.PluginEvents,
+      config: Cypress.PluginConfigOptions
+    ): Promise<Cypress.PluginConfigOptions> {
+      // This is required for the preprocessor to be able to generate JSON reports after each run, and more,
+      await addCucumberPreprocessorPlugin(on, config);
+      on(
+        "file:preprocessor",
+        createBundler({
+          plugins: [createEsbuildPlugin(config)],
+        })
+      );
+      // Make sure to return the config object as it might have been modified by the plugin.
+      return config;
+    },
+  },
+});
+//cypress.config.ts dosyasinin icinde iki yerde hata goreceksin korkma, asagidaki kodlarla cozeceksin.
+Genek olarak Cucumber kurulumunda karsilasilan hatalarla ilgili olarak su sayfada aciklama ve cozumler mevcut: 
+https://github.com/badeball/cypress-cucumber-preprocessor/blob/5e5580ba40a84303729eaf1128e5b42c0ff1b95b/docs/faq.md
+*******************************************
+4- Terminalde =>  npm install --save-dev @bahmutov/cypress-esbuild-preprocessor   => Enter
+Bu islemin sonunda cypress.config.ts dosyasi icindeki iki hatadan birinin gitmis olmasi gerek.
+*********************************************
+5- tsconfig.json file olustur, bos bir alanda sag tus yap file olustur (right click -> new file), tsconfig.json adini ver ve icine asagidaki kodu yapistir
+{
+    "compilerOptions": {
+      "paths": {
+        "@badeball/cypress-cucumber-preprocessor/*": ["./node_modules/@badeball/cypress-cucumber-preprocessor/dist/subpath-entrypoints/*"]
+      }
+    }
+}
+Bu islemin sonucunda cypress.config.ts dosyamizdaki ikinci hatanin kaybolmus olmasi gerekir. 
+Bu defa da ayni dosyada createBundler kirmizi olacak. Bunu gidermek icin o satiri komple silip yerine su kodu yazacagiz:
+import * as createBundler from "@bahmutov/cypress-esbuild-preprocessor";
+************************************************
+6- Terminalde => npm install ts-loader --save-dev      =>enter
+Bu komutu girdikten sonra ts dosyalarini npx cypress open yaptigimizda acabilecegiz.
+**********************************************
+7- Cucumber plugin (Alexander Krechik ) yukle (Vscode bir kere yuklenip tanimlanmissa tekrar yapmaya gerek yok)
+Yuklenen plugin ile projemiz arasinda iliski kurmak icinse asagidaki adimlarin yapilmasi gerek.
+Projemizde cypress/support yolunun altinda step_definitions adinda bir klasor olusturuyoruz (yazim onemli, dikkat etmek gerek)
+Sonrak adimlar:
+File-> Preferences->Settings-> Extensions-> Cucumber Auto Complete settings-> Edit in settings.json => yolunu takip et, 
+acilan file'da en son satirin sonuna virgul koyup Enter yapiyoruz, asagidaki code'u yapistiriyoruz.
+"cucumberautocomplete.strictGherkinCompletion": true,
+  "cucumberautocomplete.steps": [
+    "cypress/support/step_definitions/*.js"
+  ]
+DİKKAT: Sonraki olusturulacak projelerde step_definitions her zaman cypress/support/step_definitions yolunda olmali, yoksa plugin calismaz.
+Veya yeni yolu (veya step_definitions klasorunun yen adni -ornegin stepDefs-) plugin ile ilgili settings.json dosyasinda tanimlamaliyiz.
+******************************************
+8- package.json dosyasi icinde "devDependencies":{....} sonuna virgul koyup Enter yapiyoruz ve asigidaki kodu yapistiriyoruz
+"cypress-cucumber-preprocessor":{
+    "stepDefinitions": "cypress/support/step_definitions/**/*.js"
+  }
+DİKKAT: Sonraki olusturulacak projelerde step_definitions her zaman cypress/support/step_definitions yolunda olmali
+*****************************************************
+9- e2E icinde .feature uzantili dosyalarimizi olusturuyoruz. Salatalik simgesi gelmeli ve dosya icine Fe yazdigimizda Feature yazisi belirmeli.
+Eger cikmazsa ya plugini yuklerken bir yanlislik oldu ya da VsCode'u kapatip acmamiz gerekebilir.
+*****************************************************
+10- Kullanilacak locate'leri ve olusturulacak metotlari ise support/step_definitions yolunda olusturacagimiz .js uzantili dosyalarda bulunduruyoruz. 
+- js dosyasina isim verirken sayfa ismini kullanmak en dogrusu: HeaderStep.js, FooterStep.js, LoginPageStep.js, HomePageStep.js, RegisterPageStep.js gibi.
+- js dosyalarinin icinde Given, When, Then komutlarini kullanabilmek icin Given yazip Enter yapmak gerek, gerekli kutuphane import edilecektir (And kullanilamiyor)
+En ustteki const satirinin icine {Given, When, Then} yazilir.
+*****************************************************
+11- Environment'ta baseUrl kullanimi icin:
+cypress.config.ts dosyasi icinde yer alan e2e:{...} icinde en uste su komutu ekliyoruz:
+baseUrl: "https://managementonschools.com/", => Gitmek istedigimiz url'i tirnak icine yaziyoruz.
+*****************************************************
+12- HTML Report:
+package.json dosyasinin icindeki "cypress-cucumber-preprocessor" daha once
+yapmis oldugumuz duzenlemelerle su sekilde:
+"cypress-cucumber-preprocessor": {
+    "stepDefinitions": "cypress/support/step_definitions/**/*.js",
+}
+Burada stepDefinitions satirinin sonuna virgul koyup asagida yer alan komutu yaziyoruz:
+"html": {
+      "enabled": true, // rapor uretimini true durumuna getirir
+      "output": "cypress/reports/cucumber-html/cucumber-report.html" // raporun uretilecegi konumu ve dosya adini belirtir
+    }
+
+==>Cucumber ile methodlarimizi yazarken yine Gherkin dilinin keyword'lerini kullaniyoruz. Fakat plugin'deki eksiklik
+    nedeniyle "and" keyword'unu kullanamiyoruz. Methodun isminin scenario'daki yazimla ayni olmasi gerekli.
+==>Cucumber calisma mantigi;
+    feature uantili dosya ile testimizin adimlarini yazdik. Daha sonra step_definitions klasoru icerisinde olusturdugumuz
+    dosyanin (sitenin sayfalarini baz alarak dosyalar olusturuyoruz) icerisinde methodlarimizi olusturuyoruz. feature 
+    dosyasi ile step_definitions klasorunun icerisindeki dosyanin baglantisini ise package.json dosyasi icerisine ekledigimiz
+     "stepDefinitions":"cypress/support/step_definitions/**/*.js"
+    kod blogu araciligi ile gerceklestiriyoruz. 
+==>Cucumber'in tercih edilme sebebi olarak su iki sebep goz onunde bulundurulmali:
+  1- Test senaryolari ve raporlamalari teknik olmayan kisiler tarafindan kolayca anlasilabilir.
+  2- Senaryo ile test methodlari birbirinden ayrildigindan bir method bir defa yazilir ve gerekirse defalarca 
+  kullanilabilir. Bu yonu ise takim calismasi icin avantaj saglar.
+==>Methodunu yazdigimiz test methodunun altindaki sari cizginin kaybolmasi icin view->Command Palette->reload window
+  secenegine tikliyoruz.
+==>Cucumber kullanimindan edindigim izlenim su sekilde; gorudugum kadari ile cucumber takim calismasi icin cok elverisli
+  ve takimin hizlanmasina cok yardimci oluyor. Ayni isin birden fazla kere yapilmasinin onune gecilmis oluyor. Bir 
+  diger faydasi ise gherkin dili kullanildigi icin takim icerisinde teknik personel ile teknik olmayan personelin 
+  uyumlu bir sekilde calismasini da ciddi analamda kolaylastiriyor. feature dosyasinda test case'i olustururken
+  yazilan adimlarin daha once var olu olmadiginin kontrolu acisindan yazilan kelimeye gore vscode yarafindan oneride 
+  bulunulmasi ayni isimle birden fazla method olusturulmasini onluyor ve bu onerilere dikkat edilerek yazim yapildiginda
+  takim icerisinde ayni is icin daha once yazilmis bir method varsa bu methodun kullanimini da sagliyor. Yine methodlarin
+  yazim yeri olarak page'ler referans alindiginda calistigimiz page icin olusturulmus olan dosya incelenerek kod tekrarindan
+  kacinilabilir.
+==>Parametre Kullanimi:
+  https://github.com/cucumber/cucumber-expressions#README.md adresinden parametre tipleri incelenebilir. {int},{word} ve
+  {string} siklikla kullanilabilen parametrelerdir. {word} sadece bir kelime kabul eder bosluk kabul etmez. Ayrica {word}
+  un icerisine sayi da ekleyemiyoruz. {string} ile calisirken senaryodaki adim icerisinde "...." seklinde yazmaya dikkat 
+  etmek gerek.
+  {} seklindeki yani parantezlerin icinin bos oldugu kullanim ananymous olarak adlandiriliyor. Tipki {string} de oldugu 
+  gibi burada herhangi bir kisitlama olmaksizin veri ekleyebiliriz. Bu sekilde kullanimda senaryoda "" kullanmiyoruz. 
+  Dikkat edilmesi gereken nokta ise "" kullanmadigimiz icin bazen methodlarin isimlendirilmesinde karisikliklara sebep 
+  olabiliyor. Bir ornekle aciklamak gerekirse;
+    feature dosyamizda testin adimini su sekilde yaziyoruz: And Kullanici Email alanina "admin@practicesoftwaretesting.com" 
+    yazar
+    Ardindan bu adim icin olusturdugumuz method asagidaki gibi yaziliyor. {string} olarak belirttigimiz kisim icin 
+    fonksiyona bir parametre ekliyoruz. Burada email kismini doldurdugumuz icin parametrenin adini email olarak verdik.
+    When('Kullanici Email alanina {string} yazar', (email)=>{
+      cy.get('#email').type(email);
+    })
+    Yani parametreli kullanim ile methoda dokunmadan sadece senaryo kismindan verileri degistirerek farkli testler 
+    yapabilmek mumkun hale geliyor.
+==>Scenario Outline: 
+  Bu kullanimda ana kod ile datalar birbirinden ayri olarak kullaniliyor ve bu durum kad yazarken tavsiye edilen bir 
+  durum. Bu sayede bir tane senaryo ile istedigimiz sayida veriyi test edebiliriz. Kullanimi ise yine "" icerisine 
+  yaziyoruz fakat kelimenin basina ve sonuna <> isaretlerini ekliyoruz. "<email>" gibi. Burada kullanilan email kelimesi
+  ise tablo basligi oluyor.
+  Daha sonra Examples diyerek bir tablo olusturuyoruz. Senaryoda baslik olarak belirttigiliz datalarin altina ilgili
+  verileri ekliyoruz. Sonrasinda feature dosyasi calistiginda tablodan verileri alarak methodun icine ekliyor ve testler
+  kosuluyor. Bu sayede tek bir senaryo ile cok sayida test yapmis oluyoruz. Ozellikle elimizde bir data setinin 
+  bulundugu ve bu data setindeki datalari teste eklemek istedgimizde cok pratik bir yontem. 
+==>Backgroud: 
+  Backgroud tipki before each gibi her senaryodan once bir defa calisir. 
+==>Tag:
+  Feature fail'lara ya da senaryolara tag'le isimlendirme yapabiliyoruz. Daha sonra kosmak istedigimiz testlerin 
+  tag'larini kullanarak testleri kosabiliyoruz. Birlikte kosmak istedigimiz testlere ortak tag vererek kosma islemini
+  kolaylastirabiliriz. Senarolara tag'i senaryonun bas tarafina @tagIsmi seklinde yazarak veriyoruz. Ya da ayni islemi
+  Feature'in hemen ustune ayni sakilde bir yazim ile feature dosyalari icin yapabiliriz. Istenirse ikinci bir tag daha 
+  eklenebiliyor.
+  Testleri kosmak icin npx cypress run -e tags='@smoke' seklinde komut yazmak gerekiyor. Bu yazim ile smoke tag'ine 
+  sahip testler kosmus oluyor. Tag'lerle calisirken and or not gibi eklemelerle daha kompleks kosumlar yapabiliyoruz.
+==>Tag'lerle script eklemek:
+  npx cypress run -e tags='@smoke' seklinde olusturdugumuz komutu package json dosyasinda bulunan scripts bolumune
+  ekleyerek ilgili script uzerinden de testlerimizi calistirabiliriz. Scripts bolumune smokeTests ismi ile ekledigimizi
+  varsayarsak script uzerinden calistirabilmek icin npm run smokeTests komutu ile bu script'te yer alan testleri 
+  calistirabiliriz. Fakat burada dikkat edilmesi gereken bir durum var. Scripts icerisinde ' ' kullanamiyoruz. En dista zaten 
+  " kullandigimiz icin icerde tekrar " kullanmak da mumkun olmuyor bunu asmak icin icerde kullandigimiz " tan hemen 
+  once \ isaretini ekleyiyoruz.
+==>Hooks;
+  before, beforeEach, after, afterEach gibi hooks lari cucumber ile de kullanabiliyoruz. Bunlari ilgili class icerisinde 
+  kullanabilecegimiz gibi hooks lar icin ayri bir dosya da oluturabiliriz. Bu dosyayi step definitions icerisinde js 
+  dosya turunde olusturuyoruz. Burada belki su hususa dikkat etmek faydali olabilir. Step definitions icerisinde olusturdugumuz dosyadaki
+  hooks lar herhangi baska bir islem yapilmadan dogrudan tum testlerden once ve sonra otomatik olarak calismis oluyor.
+  -->Hooks larin tag'ler ile birlikte kullanimi;
+    Before({tags:"@smoke"} , ()=>{
+    cy.log('Her testten once calisir')
+    })
+    seklinde kullandigimiz zaman olusturulan Before blogu @smoke tag'ine sahip olan her testten once calismis olacak.
+  Dikkat edilmesi gereken bir diger nokta ise cypress teki before ile buradaki before un birbirinden farkli oldugudur. Soyle ki cypress'teki Before
+  butun testlerden once bir kere calistiriliyordu. Burada ise tipki cypress teki beforeEach te oldugu gibi herbir testen once calisiyor.
+==>Page-Object-Model(POM); support klasorunun altinda step definitions klasoru gibi pages adinda bir klasor daha olusturup locate'leri burada
+  saklayabiliriz. Fakt POM'daki burada tekrar method olusturmaya gerek olmayabilir. Cunku methodlarimizi zaten stepDefinitions icerisinde 
+  moduler bir sekilde olusturuyoruz.
+==>Raporlama; 
+  Eger istersek baskaca bir plugin eklemeden cucumber'in kendine ait raporlamasini kullanabiliriz. Bunun icin bazi duzenlemeler yapmamiz gerek.
+  package json dosyasi icerisindeki cypress-cucumber-preprocessor bolumunun icerisinde 
+    "html": {
+      "enabled": true,
+      "output": "cypress/reports/cucumber-html/cucumber-report.html"
+    }
+    gibi bir ekleme yapiyoruz. En bastaki html ifadesi html raporu olusturma istedigimizi belirtiyor. Cunlu ayni zamanda
+    json raporu da alabiliyoruz. ebale :true ifadesi ile raporun olusturulmasi saglaniyor. 
+    output ile raporun nerede olusturulmasini istedigimizi soyluyoruz.
+  -->Json rapor; 
+    Oncelikle json data turunde bir rapor olusturabilmek icin json formatter'e ihtiyacimiz var bunun icin su siteye
+    gidiyoruz; https://github.com/cucumber/json-formatter 
+    Bu sayfada degisik isletim sistemleri icin gerekli olan kurulum adimlari aciklaniyor. Burada windows icin gerekli 
+    olan dosyayi ustte belirtilen github sayfasindan indirdik. Daha sonra bilgisayardaki kullanicilar klasoru icerisine
+    cucumber-json-formatter adinda bir klasor olusturarak indirdigimiz dosyayi buraya yapistirdik. Daha sonra indirdigimiz 
+    dosyanin ismini cucumber-json-formattet.exe olarak degistirdik. Bu asamdan sonra once adini degistirdigimiz bu 
+    dosyanin path'ini aldik. Bilgisayarin arama kismini les variables d'environnement(ortam degiskenleri) yazdik. Actigimiz
+    pencerede variables environnement(sistem degiskenleri) butonuna tikladik. Burada variables utilisateur ve variables
+    système pencerelerinden variables système penceeresinin icindeki path'i bulduk ve daha sonra alttaki modifier 
+    butonuna tikladik ve acilan penceredeki bos bir satira cift tiklayarak daha once kopyaladigimiz dosya yolunu buraya
+    yapistirdik. Burada yaptigimiz ayarlamalar jenkins kullaniminda da ihtiyacimiz olan ayarlamalar. 
+    Bu asamalari gerceklestirdikten sonra package.json dosyasinda html raporunda yaptigimiza benzer sekilde su ayarlamalari
+    yaptik:
+      "json": {
+      "enabled": true,
+      "fomatter":"cucumber-json-formatter",
+      "output": "cypress/reports/cucumber-json/cucumber-report.json"
+    } 
+    Boylece reports klasoru altinda cucumber-json isminde bir klasor daha olustu ve test kosumundan sonra olusturulan json dosyasi otomatik
+    olarak bu klasore eklenmis oldu. Biz bu dosyayi jenkinsle birlikte kullanmak istiyoruz. Fakat dogrudan bu dosyayi rapora donusturmek 
+    isteseydik multiple cucumber HTML reporter'i kurmamiz gerekecekti.
+==>Jenkins; 
+  jenkins sadece java 11 ya da java 17 ile calistigi icin pc'de bu ikisinden birisinin kurulu olmasi gerek. Biraz once actigimiz les variables 
+  système kismini acip les variables système'i tikladigimda hocada JAVA_HOME adinda bir degisken oldugunu fakat bende olmadigini fark ettim.
+  Aslinda bende de jdk-17 yuklu idi. Anladigim kadari ile buradaki JAVA_HOME degiskenin adresi olarak hangi jdk surumu verilirse o versiyonu
+  kulanmis oluyoruz. Yani pc de birden fazla jdk surumu ayni anda yuklu olsa, hangi jdk surumunu kullanmak istiyorsak ilgili dosyanin path'ini
+  JAVA_HOME degikenin degeri olarak atayarak istedigimiz jdk surumu ile calisabiliriz. Bu sebeple JAVA_HOME degiskenini manuel olarak olusturdum
+  ve su an icin jdk-17'nin dosya yolunu verdim. Yine java surumunu kontrol etmek icin cmd'ye java -version komutunu da yazabiliriz.
+   

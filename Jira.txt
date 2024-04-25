@@ -14,7 +14,7 @@ Ust kisimdaki appli secenegine tiklayip acilan pencereden "explorer plus d'apps"
 xray yaziyoruz. 30 gun ucretsiz sonrasinda aylik 10 usd odenerek kullaniliyor.
 ==>US vs eklemesini creer bolumununden yapiyoruz.
 ==>Ekledigimiz US test case eklemek icin creer bolumunden Test secenegini seciyoruz. Summary bolumune basligini yaziyoruz. 
-    Asagidaki seceneklerden kime atanacagi, hangi US ile baglantili oldugu vs bilgilerini seciyoruz ve boylece US bagli bir TC 
+    Asagidaki seceneklerden kime atanacagi, hangi US ile baglantili oldugu(relaes to) vs bilgilerini seciyoruz ve boylece US bagli bir TC 
     olusturmus oluyoruz. Daha sonrasinda test adimlarini vs ilgili TC'e tiklayarak(acilan pencerede import secenegini secerek) 
     import ediyoruz.
 ==>Her gun (takimin kararina gore degisebilir) kosulacak testleri smoke test olarak isimlendirebiliriz. 

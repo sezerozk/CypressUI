@@ -1,0 +1,102 @@
+==>Olusturacagimiz framework data driven yani veri odakli bir framework olacak.
+==>Framework nedir?
+    - Bir ekibin islerini yapma seklini belirleyen ortak bir standarttir.
+    - Kod tekrarindan kacinmayi amaclar.
+    - Anlamli raporlandirmalar yapabilmeyi mumkun kilar.
+    - Aksiyonlari gizleme (encapsulation) prensibine odaklanir.
+    - Kodun okunabilir ve bakiminin kolay olmasini hedefler.
+    - Kodlama standartlarina uymayi saglar.
+    Iyi tasarlanmis bir sistemin birincil dusmani duplikasyondur. Robert Morin - Clean Code Collection
+    DRY Prensibi-->Don't Repeat Yourself
+==>Page Object Model nedir?
+    web sayfasi(test edilen uygulama)-->Page Object(Web elementleri ve methodlar)-->Test Class(Test Methodlari)
+    1- POM farkli framework yapilari ile uyumludur. Yani POM icin farkli framework yapilari ile de kullanilabilecek bir
+        dizayndir diyebiliriz. Veri odakli(data driven) ya da davranis odakli(behavior driven) framework tarzlari ile 
+        uyumludur.
+    2- Test class'lari ile web ogelerinin ve methodlarin olusturdugu class larin farkli class lar olmasi hedeflernir
+        ve istenir. Ayrica datalarin koddan ayri olarak saklanmasi genel olarak beklenilen bir seydir.
+    3- Veri odakli testler;
+        -Frakli veri setleriyle uygulamanin test edilmesini saglar ve bu da yapilan testlerin etkinliginin artmasina
+        ve sonuc olarak testten beklendigi gibi uygulamaya olan guvenin artirilmasina olanak saglar.
+==>Framework Olusturma Adimlari;
+    1- Yeni bir klasor olusturduk ve vscode'de klasoru actiktan sonra terminalde npm init komutunu girdik. Bu komutu
+    girdikten sonra framework'te package.json dosyasi olustu.
+    2- npm install cypress komutu ile cypress'i yukledik. Yukleme tamamlandiginda node_modules ve package-log.json
+    dosyalari olustu.
+    3- npx cypress open ile cypress'i actik. Ilk defa acinca cypress isimli bir klasor bunun icerisine e2e, support
+    fixture klasorlerini support'un altinda command.js ve e2e.js dosyalarini ve framework'un ana yapisina cypress.config.js
+    dosyalarini olusturmus olduk.
+==>Bu framework'te calismalar yaparken https://practicesoftwaretesting.com/#/ adresini kullanacagiz. Bu sitenin 
+    gelistiricileri bir github reposu ile siteye iliskin bilgileri paylasmislar. Istenirse API testi icin kullanilacak
+    swagger dokumanina bu github reposu araciligi ile ulasilabilir.
+==>Support'un altinda pages isimli bir klasor olusturduk. Bu klasorun icerisine .js uzantili js dosyalari ekleyerek
+    calistigimiz ilgili sayfadan aldigimiz locate'leri ustte methodlari ise daha asagida konumlandirmanin uygun 
+    olacagi soylendi. Burada farkli kullanim ihtimalleri soz konusu olabiliyor. 
+        - Ilk olarak bir class olusturuyoruz ve bu class in icerisinde ustte locate'ler altta methodlar oluyor. Burada
+        locate alma islemi bir method icerisinde yapiliyor ve alttaki methodlarla calisirken this.locateAlinanMethodIsmi()
+        diyerek calisiyoruz. Yani locate almak icin de method olusturuyoruz. Hocanin tavsiyesi ise bunun yerine;
+        - class icerisinde bir constructor olusturup locateleri bu constructor icerisinde bir degiskene deger olarak
+        atamak ve asagidaki aksioyn methodunda bu degiskeni kullanarak yapilmak istenen aksiyonu gerceklestirmek.
+        Burada degiskeni tanimlarken ve asagida cagirirken this. yapisini kullaniyoruz.
+    -->Yazdigimiz methodlari test class larinda nasil kullanacagiz? Burada da farkli kullanimlar soz konusu olabiliyor.
+        Ilk olarak bilinmesi gereken bir class'ta bulunan methodlari kullanabilmek icin o class'tan object olusturmamiz
+        gerektigidir. Bu object olusturma islemini test class'inda yapabilecegimiz gibi dogrudan methodlarin bulundugu
+        class'ta da yapabiliriz. Dogrudan methodlarin bulundugu class'ta object olusturarak devam etmek daha pratik
+        olabilir. Bunun icin asagidaki gibi bir object olusturmak gerek;
+            const registerPage-object adi- = new RegisterPage()-class adi-;
+==>Akilli kod yazma destegi icin tsconfig.json dosyasini cypress klasorunun altina ekledik.
+==>baseUrl ekleme islemi;
+    cypress.config.js dosyasinda e2e icerisine baseUrl anahtar kelimesi ile baseUrl' i ekledik. cy.visit icerisinde '/'
+    seklindeki kullanim dogrudan baseUrl'e baglanmamizi sagliyor.
+==>Environment olusturma;
+    cypress.config.js dosyasinda baseUrl'in alt kismina env ismi ile bir alan olusturduk ve bunun icerisinde farkli 
+    degiskenler olusturuyoruz. Ornegin register sayfasinin baseUrl den sonraki pathParam larini register ismi ile buraya
+    ekledik ve cy.visit icerisinde cy.visit('/' + Cypress.env('register')); seklinde kullanim ile baseUrl in devamina
+    ilgili pathParam lari eklemis olduk.
+    
+==>Faker kurulumu;
+    npm install faker --save-dev @faker-js/faker komutu ile eklenti kurulur.
+    e2e.js dosyasina require('@faker-js/faker') kodu eklenir
+==>Screenshot ve video kaydi;
+    Testlerimizi open komutu ile degil de run komutu ile calistirdigimizda default gelen ayarlar ile fail olan testlerin
+    ekran fotografi otomatik olarak cekiliyor. Bu ayari degistirmek istiyorsak cypress.config.js dosyasinde module exports
+    un altina "screenshotOnRunFailure:false" kodunu eklememiz gerekli. Yine default olarak gelen baska bir ayar ile her bir
+    run'dan once daha once fail olan testlerin ekran goruntulerinin tutuldugu screenshots klasorundeki veriler siliniyor.
+    video cekilmesi ayari ise default olarak false geliyor fakat cypress.config.js dosyasinda video:true seklinde degisiklik
+    yaptigimizda artik testler kosulurken video kaydi yapilmis oluyor. Burada dikkat etmemeiz gereken test gecse de kalsa da 
+    video kaydinin yapildigi ve tipki screenshots klasorunde oldugu gibi her bir run komutunun oncesinde verilerin silindigidir.
+==>Proje ayarlari/fail olan testlerin tekrar kosturulmasi
+    npx cypress open komutu ile cypress'i actiktan sonra soldaki menuden settings'e tikladigimizda prject settings secenegini gorebiliyoruz.
+    Burada projemizin ayarlari yer aliyor. Burada yer alan retries: { runMode: 0, openMode: 0,} komutu fail olan testlerin hangi komutla
+    calistiginda kac defa tekrar edilecegini gosteriyor. Yine cypress.config.js dosyasi uzerinden 0 olan degerleri degistirdigimizde 
+    fail olan testler belirttigimiz sayida tekrar kosturuluyor.
+==>Run komutlari:
+    npx cypress run--> e2e klasoru icerisindeki tum testleri electron browser'inda kosturur.
+    npx cypress run --spec klasorYolu -->Yolu verilen klasordeki testleri kosar(Dosya yolu alirken relative path \ 
+    seklinde gelebiliyor calistirmak icin "/" slash isareti ile degistirmek gerek)
+    npx cypress run --spec dosyaYolu -->Yolu verilen dosyanin icerisindeki testleri kosar
+    --browser chrome, edge vs. -->belirtilen browser'da kosulur
+    --headed --browser chrome -->Testleri browser acarak chrome browserda kosar. Yani headless oldugunda browser
+    acmadan terminalde kosuyor. headed denilerek kosturuldugunda browser aciyor ve browser'da kosuyor.
+==>package.json dosyasinda yapilan tanimlamalarla testleri calistirma;
+    Ornegin dosya yolunu belirterek, chrome borowser'da ve headed olarak calistirmak istedigimiz testler olsun. Bu 
+    testleri run komutu ile calistirmak icin asagidaki gibi bir komut yazmamiz gerek;
+    npx cypress run --browser chrome --headed --spec cypress/e2e/TC01.cy.js
+    Kosmak istedigimiz bu testler sik sik kostugumuz testler ise her seferinde bu uzun komutu yazmak yerine soyle bir
+    yol izleyebiliriz. Bu komutu alip package.json dosyasinin icerisinde "scripts" in altina bir isim vererek ekliyoruz.
+    Ornegin yukarida verdigimiz komutu "registerTest" ismi ile tanimladik. Daha sonra bu testleri kosmak istedigimiz 
+    zaman --> npm run registerTest dememiz yeterli oluyor.
+==>Raporlama;
+    https://docs.cypress.io/plugins adresinde reporting kismini inceliyoruz. Burada cesitli kullanabilecegimiz cesitli
+    raporlar listelenmis durumda. Buradan cypress-mochaawesome-reporter'i kullanacagiz. Bu secenege tikladigimiz zaman 
+    bir github sayfasina yonlendiriliyoruz. Bu sayfada rapor ornekleri ve kurululun nasil gerceklestirilecegi ile ilgili
+    bilgiler bulunuyor. Burada kurulum icin belirtilen adimlari gerceklestiriyoruz. ILk olarak npm ile gerekli dosyalari
+    indirdik. Daha sonra cypress.config.js dosyasinda degisiklikler yaptik. Daha sonra e2e.js dosyasinda import islemi 
+    gerceklestirdik. Son olarak rapor alabilmek icin testleri run komutu ile kosturmamiz gerekiyor. Boyle yaptigimizda 
+    sol taraftaki proje agacimizda repots isimli bir klasor olusuyor. Bu klasorun icinde bulunan index.html isimli
+    dosyayi browser'da acarak raporu unceleyebiliyoruz. Eger istersek ekleyebilecegimiz option lar ile raporu daha
+    kullanisli hale getirebiliriz.
+    overwrite : false --> Bu option ile daha once olusturulan index.html dosyasi izerinde islem yapilmaksizin yeni 
+    bir dosya olusturularak raporun goruntulenmesini saglamis oluyoruz.
+    charts: true --> Rapora gecen ve kalan testlerle ilgili grafik eklenmesini sagliyor.
+    reportPageTitle: 'Tool Shop Projet Report' --> Rprun basligini bu sekilde ayarliyoruz.
