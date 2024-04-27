@@ -1,0 +1,72 @@
+==>Kurulum:
+    jenkins sadece java 11 ya da java 17 ile calistigi icin pc'de bu ikisinden birisinin kurulu olmasi gerek. Biraz once 
+    actigimiz les variables système kismini acip les variables système'i tikladigimda hocada JAVA_HOME adinda bir 
+    degisken oldugunu fakat bende olmadigini fark ettim. Aslinda bende de jdk-17 yuklu idi. Anladigim kadari ile buradaki 
+    JAVA_HOME degiskenin adresi olarak hangi jdk surumu verilirse o versiyonu kulanmis oluyoruz. Yani pc de birden fazla 
+    jdk surumu ayni anda yuklu olsa, hangi jdk surumunu kullanmak istiyorsak ilgili dosyanin path'ini JAVA_HOME degikenin 
+    degeri olarak atayarak istedigimiz jdk surumu ile calisabiliriz. Bu sebeple JAVA_HOME degiskenini manuel olarak 
+    olusturdum ve su an icin jdk-17'nin dosya yolunu verdim. Yine java surumunu kontrol etmek icin cmd'ye java -version 
+    komutunu da yazabiliriz.
+    https://www.jenkins.io/download/ sitesi uzeinden Generic Java package dosyasini indiriyoruz.
+    Inen dosyayi techPro klas icerisinde Jenkins ismi ile olusturdugum bir klasorun icerine ekledik. Jenkins'i acma islemeini inen bu dosya 
+    uzerinden gerceklestirecegiz. Daha sonra jenkin'i kaydettim bu dosyanin adres cubugune cmd yazarak bu dosyasi komut ekraninda acmis oldum.
+    java -jar jenkins.war komutu ile kurulumu baslattim. Bu komuttan sonra soyle bir sifre ortaya cikti; 
+    5dc1fea2626c41b4a3b62685564297cf
+    Daha sonra chrome browser'da localhost:8080 adresine gittik. Acilan ekrana sifreyi girerek devam diyoruz. Acilan ekranda install suggested 
+    plugins secenegini seciyoruz.
+    Jenkinsle alakali indirdigimiz plugins vs. c diskinde utilisateur/33620/.jenkins isimli klasorde tutuluyor.
+    Plugin ler yuklendikten sonra ilk admin kullaniciyi olusturdugumuz ekran aciliyor.
+    kullanici adi: sezer
+    sifre: sezer123
+    Boylece kurulum tamamlanmis oluyor ve kontrol merkezi olarak isimlendirilen anasayfaya geliyoruz. Burada yeni oge olusturmek yeni bir proje 
+    olusturmak demek oluyor. Burada proje olustururken serbest stil proje seciyoruz.
+    - NodeJs eklentisi yukledik ve daha sonra bu eklentiyi araclar uzerinden jenkins'e tanittik.
+    - Daha sonra yeni oge diyerek Cypress249Cucumber-localHost adinda yeni bir proje olusturduk.
+    - Olusturdugumuz projenin konfugrasyon ayarlari uzerinden gelismis secenegine tiklayip asagida ozel alan kullan 
+    dedikten sonra jenkinsle calistirmak istedigimiz projenin dosya yolunu buraya ekledik.
+    - Ayarlarin alt kismindan "yapilandirma adimlari" nin icerisinde yapilandirma adimi ekle dedik ve windows icin 
+    "windows batch komutu calistir" secenegini sectik. Sectikten sonra acilan yorum kutusuna jenkinsle beraber 
+    kullanacagimiz komutlari yaziyoruz. 
+        * Ilk olarak npm install komutunu ekledik. Bunu calistirmak istedigimiz projede node modules klasorunun 
+        bulunmadigi durumlarda jenkins tarafindan bu klasorun yujlenebilmesi icin ekliyoruz. 
+        * Daha sonra tekrar yapilandirma adimi ekle diyerek baska bir komut daha ekliyoruz. Projemizde olusturdugumuz
+        smokeTests script'inin calisabilmesi icin yazdigimiz <<npm run smokeTests>> komutunu buraya da ekliyoruz ve 
+        kaydet butonuna tikliyoruz.
+    - Olusturdugumuz projeye gidip simdi yapiladir dedigimizde ekledigimiz komutlarla testlerimiz calistiriliyor.
+    Somke test tag'i ile olusturdugumuz testlerin calismasi icin gerekli kodu komut olarak ekledigim icin yapilandir 
+    dedigimde smoke testler kosulmus oluyor.
+    - Kosum sonrasinda olusturulan raporun daha renkli ve okunabilir olmasi icin <<ansi color>> eklentisini kurduk. 
+    Daha sonra kurdugumuz bu eklentiyi hangi projede calistirmak istiyorsak o projede konfigurasyonu duzenle deyip
+    yapilandirma ortami secenegi icerisinde color ansi console output secenegini secerek kaydet butonuna tikliyoruz.
+    Bu eklentinin daha verimli calisabikmesi icin cmd ekraninda server'i kapattiktan sonra 
+    "java -Dfile.encoding=UTF8 -jar jenkins.war" komutu ile server'i tekrar calistirdik. Bu ayarlamalardan sonra jenkins'teki
+    console output vscade console'a benzer bir goruntu ile calismaya basladi ve bu sayede hangi testlerin kosuldugu 
+    testlerin kaldigi ya da gectigi gibi hususlari anlamak daha kolay hale geldi.
+    - Bir sonraki asamada projemizi daha dinamik hale getirebilmek icin duzenlemeler yaptik. Su anki halde kosmak istedigimiz 
+    testler icin komut eklememiz gerekiyor. Bunun yerine sadece olusturdugumuz scriptlerin isimlendirmeleri ile calisabilmek
+    icin konfigurasyon bolumunden <<bu projeyi parametrik hale getir>> dedikten sonra parametre ekle diyoruz ve acilan 
+    pencereden <<choice parameter>> secenegini seciyoruz. Daha sonra olusturacagimiz parametrelere genel olarak 
+    vereceigimiz ismi seciyoruz. Ben <<script>> dedim. Alt kisimda ise projemizdeki scriptlerin isimlerini yaziyoruz.
+    Boylece script parametresini kullanarak projemizde olan ve jenkins'e script parametresinin altinda ekledigimiz butun
+    scriptleri kullanabilir hale geliyoruz.
+        Parametrenin kullanimi; bunun icin daha yazdigimiz npm run smokeTest komotunu npm run %script% seklinde degitirip
+        kaydediyoruz. Bu degisikliklerden sonra projede daha <<simdi yapilandir>> olarak gorunen kisim parametrelerle
+        yapilandir olarak gorunmeye basladi ve tikladigimizda hangi testleri calistirmak istiyorsak buradan secebilir hale geldik.
+    -->Tag'lerle projeme kosumu:
+        Cypress249Cucumber-localHost--Tags ismi ile yeni bir oge olusturduk ve diger projedeki konfigurasyonlari kullanabilmek
+        icin serbest stil proje demek yerine asagida kopyalanacak oge kismindan ilk projemizin adini sectik. Boylece her iki 
+        projede ayni konfigurasyonlara sahip olmus oldu. Daha sonra choice parameter kismindaki scrip'i tag ile degistirip 
+        choices kismina @ isareti kullanmadan tag isimlerini ekledik. Asagidaki command kismini npx cypress run -e tags="@%tag%"
+        seklinde degistirdik. Sonrasinda tipki scriptlerle kosarken yaptigimiz gibi parametrelerle yapilandir kismindan
+        calistirmak istedigimiz tag'i secerken testlerimizi calistirdik.
+    -->Browser secimini parametrek hale getirerek kosum yapmak;
+        Cypress249Cucumber-localHost--Tags isimli projede parametre ekle/choice parameter secenekleri uzerinden parametre
+        ekledik. Daha sonra asagidaki komut satirini npx cypress run -e tags="@%tag%" --browser %browser% --headed seklinde 
+        degistirdik. Boylece projemizde iki farkli parametre secimi mumkun hale gelmis oldu. Ilk parametre ile hangi tag'e 
+        sahip testlerin kosulacagini ikinci parametre ile ise hangi browserda kosulacagini seciyoruz. Koda --headed kismini
+        ekledimiz icin artik sectigimiz browser acilarak kosum yapiliyor. Biz de testler kosulurken izleyebiliyoruz.
+    -->Jenkins icerisinde HTML raporu olusturmak:
+        Konsol ciktisi duzenlenmis hali ile dahi cok da okunakli olmadigindan daha kolay anlasilir raporlamalara ihtiyac 
+        duyulabilir. Jenkins i yonet kismindan cucumber raports eklentisini yukluyoruz.
+    -->Projeyi github uzerinden calistirmak:
+
