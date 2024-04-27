@@ -67,6 +67,60 @@
         ekledimiz icin artik sectigimiz browser acilarak kosum yapiliyor. Biz de testler kosulurken izleyebiliyoruz.
     -->Jenkins icerisinde HTML raporu olusturmak:
         Konsol ciktisi duzenlenmis hali ile dahi cok da okunakli olmadigindan daha kolay anlasilir raporlamalara ihtiyac 
-        duyulabilir. Jenkins i yonet kismindan cucumber raports eklentisini yukluyoruz.
+        duyulabilir. Jenkins i yonet kismindan cucumber raports eklentisini yukluyoruz. Daha sonra hangi projede bu raporu
+        kullanmak istiyorsak o projenin konfigurasyon ayarlarinda en altta bulunan yapilandirma sonrasi aksiyonlar kismindan
+        cucumber reports secenegini secip kaydet butonuna tikliyoruz. Bu plugin'i kullanmak icin daha once cucumber projemiz
+        icerisinde duzenlemeler yaptigimizi unutmamamiz gerek. Yaptigimiz duzenlemeler ile ilgili aldigim notlar su  sekilde;
+            -->Oncelikle json data turunde bir rapor olusturabilmek icin json formatter'e ihtiyacimiz var bunun icin su siteye
+            gidiyoruz; https://github.com/cucumber/json-formatter 
+            Bu sayfada degisik isletim sistemleri icin gerekli olan kurulum adimlari aciklaniyor. Burada windows icin gerekli 
+            olan dosyayi ustte belirtilen github sayfasindan indirdik. Daha sonra bilgisayardaki kullanicilar klasoru icerisine
+            cucumber-json-formatter adinda bir klasor olusturarak indirdigimiz dosyayi buraya yapistirdik. Daha sonra indirdigimiz 
+            dosyanin ismini cucumber-json-formattet.exe olarak degistirdik. Bu asamdan sonra once adini degistirdigimiz bu 
+            dosyanin path'ini aldik. Bilgisayarin arama kismini les variables d'environnement(ortam degiskenleri) yazdik. Actigimiz
+            pencerede variables environnement(sistem degiskenleri) butonuna tikladik. Burada variables utilisateur ve variables
+            système pencerelerinden variables système penceeresinin icindeki path'i bulduk ve daha sonra alttaki modifier 
+            butonuna tikladik ve acilan penceredeki bos bir satira cift tiklayarak daha once kopyaladigimiz dosya yolunu buraya
+            yapistirdik. Burada yaptigimiz ayarlamalar jenkins kullaniminda da ihtiyacimiz olan ayarlamalar. 
+            Bu asamalari gerceklestirdikten sonra package.json dosyasinda html raporunda yaptigimiza benzer sekilde su ayarlamalari
+            yaptik:
+            "json": {
+            "enabled": true,
+            "fomatter":"cucumber-json-formatter",
+            "output": "cypress/reports/cucumber-json/cucumber-report.json"
+            } 
+            Boylece reports klasoru altinda cucumber-json isminde bir klasor daha olustu ve test kosumundan sonra olusturulan json dosyasi otomatik
+            olarak bu klasore eklenmis oldu. Biz bu dosyayi jenkinsle birlikte kullanmak istiyoruz. Fakat dogrudan bu dosyayi rapora donusturmek 
+            isteseydik multiple cucumber HTML reporter'i kurmamiz gerekecekti.
+        -->Projemizde reposts/cucumber-json klasoru icerisinde bulunan raporun ismi <<cucumber-report.json>> seklinde oldugundan konfigurasyon
+            kisminda cucumber raports kisminda file include pattern kisminda <<**/*.json>> seklindeki bolumu <<**/*cucumber-report.json>> seklinde
+            degistirdik. Boylece jenkins te yaptigimiz bu duzenlemeler sayesinde projemizde bulunan ve raporda yer alan bilgileri barindiran
+            json dosyasi bulunacak ve o dosyadaki bilgilerden bir rapor olusturulacak. 
     -->Projeyi github uzerinden calistirmak:
+        Yeni oge olustur secenegi ile Cypress249Cucumber-Github--Tags adinda yeni bir proje olusturduk. Daha once tag'lerle
+        calismak icin olusturdugumuz projenin konfigurasyon ozelliklerini bu projeye kopyaladik. Daha sonra konfigurasyon
+        kisminda gelismis secenegi altinda bulunan ozel calisma alanini kullan'daki isareti kaldiriyoruz. Ve kaynak kodu
+        yonetimi kisminda git secenegini secip hemen altindaki repostory url kisminda github repo muzun adresini ekliyoruz.
+        Credintials kismina github kullanici adi ve sifremizi eklememiz gerek. Bunun icin hemen alttaki add secenegini 
+        tiklayip username ve password girisi yapiyoruz ve son olarak yaptigimiz degisiklikleri kaydediyoruz. 
+        Burada belki soyle bir farkliliktan bahsedilebilir. Github'a projeyi yuklerken .gitignore dosyasi ile node_modules u
+        yuklemedigimiz icin jenkins uzeinden ilk defa calistirdigimizda daha once ekledigimiz npm install komutu ile node
+        modules dosyasi indirilecegi icin biraz daha yavas calisacaktir. Fakat daha sonraki kosumlarda bir kere indirilip
+        kaydedilecegi icin yavas calisma durumu ortadan kalkacaktir.
+    -->Jenkins araciligi ile projeyi otomatik olarak calistirmak:
+        Otomatik olarak calistirmak istedgimiz projenin konfigurasyon kismina gidip periyodik olarak yapilandir kisminin altinda bulunan
+        planla kismi uzerinden yapiyoruz. Calisma mantigi su sekilde;
+            Planla kisminin yan tarafindaki soru isaretine tiklandiginda nasil kullanildigi aciklaniyor.
+            * * * * * (her dakika kosar)
+            15 * * * * (her 15 dakikada bir kosar)
+            15 13 * * * (her gun saat 13.15'te kosar)
+            15 13 10 * * (her ayin 10. gunu saat 13.15'te kosar)
+            15 13 10 2 * (subat ayinin 10. gunu saat 13.15'te kosar)
+            15 13 * * 1 (her pazartesi saat 13.15'te kosar)
+            MINUTE	Minutes within the hour (0–59)
+            HOUR	The hour of the day (0–23)
+            DOM	The day of the month (1–31)
+            MONTH	The month (1–12)
+            DOW	The day of the week (0–7) where 0 and 7 are Sunday.
+        Unutmamak gerekir ki otomatik olarak baslanabilmesi icin server'in acik olmasi gerekmektedir.
 
